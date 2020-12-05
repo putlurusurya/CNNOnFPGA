@@ -3,27 +3,20 @@ module test;
  // Inputs
  reg clk;
  reg reset;
- reg [7:0] a1;
- reg [7:0] a2;
- reg [7:0] a3;
- reg [7:0] b1;
- reg [7:0] b2;
- reg [7:0] b3;
 
 
- wire [23:0] datain;
- wire [23:0] weightin;
- wire [47:0]  macouti;
- wire [47:0]  macoutj;
- assign datain={a1,a2,a3};
- assign weightin={b1,b2,b3};
+ reg [31:0] datain;
+ reg [31:0] win;
+ wire [63:0]  macouti;
+ wire [63:0]  macoutj;
+
 
  // Instantiate the Unit Under Test (UUT)
 systolic_array uut (
   .clk(clk), 
   .reset(reset), 
   .datain(datain),
-  .weightin(weightin),
+  .weightin(win),
   .macouti(macouti),
   .macoutj(macoutj)
  );
@@ -31,26 +24,188 @@ systolic_array uut (
  initial begin
   // Initialize Inputs
   clk = 0;
-  reset = 0;
-  a1 = 0;
-  a2 = 0;
-  a3 = 0;
-  b1 = 0;
-  b2 = 0;
-  b3 = 0;
+
+
 
   // Wait 100 ns for global reset to finish
   #5 reset = 1;
   #5 reset = 0;
-  #5;  a1 = 1; a2 = 0; a3 = 0; b1 = 2; b2 = 0; b3 = 0;
-  #10; a1 = 2; a2 = 4; a3 = 0; b1 = 4; b2 = 1; b3 = 0;
-  #10; a1 = 3; a2 = 5; a3 = 7; b1 = 6; b2 = 5; b3 = 3;
-  #10; a1 = 0; a2 = 6; a3 = 8; b1 = 0; b2 = 9; b3 = 7;
-  #10; a1 = 0; a2 = 0; a3 = 9; b1 = 0; b2 = 0; b3 = 8;
-  #10; a1 = 0; a2 = 0; a3 = 0; b1 = 0; b2 = 0; b3 = 0;
-  #100;
-  $stop;
 
+    clk = 1'b0;
+        datain = 32'h0000_0000;
+        win = 32'h0000_0000;
+
+
+        #10;
+
+        //win = 32'h0404_0404;
+        win = 32'h0403_0201;
+ 
+
+        #10;
+
+        //win = 32'h0303_0303;
+        win = 32'h0403_0201;
+
+        #10;
+
+        //win = 32'h0202_0202;
+        win = 32'h0403_0201;
+
+        #10;
+
+        //win = 32'h0101_0101;
+        win = 32'h0403_0201;
+
+
+        #10
+
+        datain = 32'h0000_0000;
+        
+        #10;
+
+        datain = 32'h0000_0401;
+
+        #10;
+
+        datain = 32'h0008_0502;
+
+        #10;
+
+        datain = 32'h0C09_0603;
+
+        #10;
+
+        datain = 32'h0D0A_0700;
+
+        #10;
+
+        datain = 32'h0E0B_0000;
+
+        #10;
+
+        datain = 32'h0F00_0000;
+        
+
+        #10;
+
+        datain = 32'h0000_0000;
+
+        #30;
+
+       win = 32'h0F0B_0703;
+
+        #10;
+
+        win = 32'h0E0A_0602;
+
+        #10;
+
+        win = 32'h0D09_0501;
+
+        #10;
+
+        win = 32'h0C08_0400;
+      
+        #10;
+
+        datain = 32'h0000_0001;
+       
+
+        #10;
+
+        datain = 32'h0000_0502;
+
+        #10;
+
+        datain = 32'h0009_0603;
+
+        #10;
+
+        datain = 32'h0D0A_0704;
+
+        #10;
+
+        datain = 32'h0E0B_0800;
+
+        #10;
+
+        datain = 32'h0F0C_0000;
+
+        #10;
+
+        datain = 32'h1000_0000;
+
+        #10;
+
+        datain = 32'h0000_0015;
+
+        #10;
+
+        datain = 32'h0000_1D00;
+
+        #10;
+
+        datain = 32'h0021_0000;
+
+        #10;
+
+        datain = 32'h0400_0000;
+
+        #10;
+
+        datain = 32'h0000_0000;
+       
+
+        #30;
+
+    
+        win = 32'h000C_030A;
+
+        #10;
+
+        win = 32'h00AA_0B02;
+
+        #10;
+
+        win = 32'h000C_010A;
+
+        #10;
+
+        win = 32'h0000_0000;
+    
+
+        #10;
+
+        datain = 32'h0000_0000;
+    
+
+        #10;
+
+        datain = 32'h0000_AA00;
+
+        #10;
+
+        datain = 32'h00DD_BB00;
+
+        #10;
+
+        datain = 32'h01EE_CC00;
+
+        #10;
+
+        datain = 32'h01FF_0000;
+
+        #10;
+
+        datain = 32'h0900_0000;
+    
+
+        #10;
+
+        datain = 32'h0000_0000;
+
+        #30;
  end
  
  initial begin
