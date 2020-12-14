@@ -18,32 +18,29 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
-module reluArr(en, in, out);
-
-	parameter DATA_WIDTH = 16;
-	parameter ARR_INPUTS = 16;
-	
-	localparam ARR_WIDTH = DATA_WIDTH*ARR_INPUTS;
-
-	input en;
-	input [ARR_WIDTH-1:0] in;
-	output wire [ARR_WIDTH-1:0] out;
-
-	reluMux muxArr[ARR_INPUTS-1:0] (
+module reluArr#(
+    parameter data_width = 8,
+	parameter no_relu = 8,
+	localparam arr_width = data_width*no_relu
+)(
+	input en,
+	input [arr_width-1:0] in,
+	output wire [arr_width-1:0] out
+);
+	relufunc relu_arr[no_relu-1:0] (
         .en (en),
 		.in (in),
 		.out(out)
 	);
 
 endmodule 
-module reluMux(en, in, out);
-
-    parameter DATA_WIDTH = 16;
-
-    input en;
-    input signed [DATA_WIDTH-1:0] in;
-    output wire signed [DATA_WIDTH-1:0] out;
-
-    assign out = (in > 0 || en) ? in : 0;
+module relufunc#(
+    parameter data_width = 8
+)(
+    input en,
+    input signed [data_width-1:0] in,
+    output wire signed [data_width-1:0] out
+);
+    assign out = (in > 0 && en) ? in : 0;
 
 endmodule
