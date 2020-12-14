@@ -25,22 +25,20 @@ module systolic_array#(
     parameter array_size = 4 ,
     localparam data_size=8*array_size,
     localparam weight_size=8*array_size,
-    localparam mac_size=8*array_size
+    localparam mac_size=8*array_size*array_size
     )
 (
     input clk,
     input reset,
     input [data_size-1:0] datain,
     input [weight_size-1:0] weightin,
-    output [mac_size-1:0] macouti,
-    output [mac_size-1:0] macoutj
+    output [mac_size-1:0] macout
 
     );
     
     
     wire [7:0] data_wire [0:array_size][0:array_size];
     wire [7:0] weight_wire [0:array_size][0:array_size];
-    wire [15:0] mac_wire [0:array_size-1][0:array_size-1];
     
     genvar i,j;
     
@@ -53,18 +51,11 @@ module systolic_array#(
                     .reset(reset),
                     .in_a(datain[(i+1)*8-1:i*8]),
                     .in_b(weightin[(j+1)*8-1:j*8]),
-                    .out_c(mac_wire[i][j]),
+                    .out_c(macout[(i*array_size+j+1)*8-1:(i*array_size+j)*8]),
                     .out_a(data_wire[i][j+1]),
                     .out_b(weight_wire[i+1][j])
                     );
                 end
         end
     endgenerate 
-    generate
-        for(i=0;i<array_size;i=i+1)begin
-            assign macouti[(i+1)*8-1:i*8]=mac_wire[i][array_size-1];
-            assign macoutj[(i+1)*8-1:i*8]=mac_wire[array_size-1][i];
-            
-        end
-    endgenerate
 endmodule

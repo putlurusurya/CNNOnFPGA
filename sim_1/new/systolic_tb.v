@@ -1,4 +1,4 @@
-module test;
+module systolic_tb;
 
  // Inputs
  reg clk;
@@ -7,8 +7,8 @@ module test;
 
  reg [31:0] datain;
  reg [31:0] win;
- wire [31:0]  macouti;
- wire [31:0]  macoutj;
+ wire [127:0]  macout;
+
 
 
  // Instantiate the Unit Under Test (UUT)
@@ -17,8 +17,7 @@ systolic_array uut (
   .reset(reset), 
   .datain(datain),
   .weightin(win),
-  .macouti(macouti),
-  .macoutj(macoutj)
+  .macout(macout)
  );
 
 initial
@@ -29,8 +28,8 @@ begin
 
 
   // Wait 100 ns for global reset to finish
-  #5 reset = 1;
-  #5 reset = 0;
+   reset = 1;
+  #20 reset = 0;
 
     clk = 1'b0;
         datain = 32'h0000_0000;
