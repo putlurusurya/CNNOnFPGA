@@ -7,8 +7,8 @@ module test;
 
  reg [31:0] datain;
  reg [31:0] win;
- wire [63:0]  macouti;
- wire [63:0]  macoutj;
+ wire [31:0]  macouti;
+ wire [31:0]  macoutj;
 
 
  // Instantiate the Unit Under Test (UUT)
@@ -21,7 +21,8 @@ systolic_array uut (
   .macoutj(macoutj)
  );
 
- initial begin
+initial
+begin
   // Initialize Inputs
   clk = 0;
 
@@ -38,172 +39,36 @@ systolic_array uut (
 
         #10;
 
-        //win = 32'h0404_0404;
         win = 32'h0403_0201;
+        datain = 32'h0100_0000;
  
 
         #10;
-
-        //win = 32'h0303_0303;
-        win = 32'h0403_0201;
-
-        #10;
-
-        //win = 32'h0202_0202;
-        win = 32'h0403_0201;
-
-        #10;
-
-        //win = 32'h0101_0101;
-        win = 32'h0403_0201;
-
-
-        #10
-
-        datain = 32'h0000_0000;
+;
+        win = 32'h0506_0708;
+        datain = 32'h0203_0000;
         
         #10;
-
-        datain = 32'h0000_0401;
-
-        #10;
-
-        datain = 32'h0008_0502;
-
-        #10;
-
-        datain = 32'h0C09_0603;
-
-        #10;
-
-        datain = 32'h0D0A_0700;
-
-        #10;
-
-        datain = 32'h0E0B_0000;
-
-        #10;
-
-        datain = 32'h0F00_0000;
         
-
+        win = 32'h090A_0B0C;
+        datain = 32'h0405_0600;
+        
         #10;
-
-        datain = 32'h0000_0000;
-
-        #30;
-
-       win = 32'h0F0B_0703;
-
+        
+        datain = 32'h0708_090A;
+        
         #10;
-
-        win = 32'h0E0A_0602;
-
+        
+        datain = 32'h0B0C_0D00;
+        
         #10;
-
-        win = 32'h0D09_0501;
-
+        
+        datain = 32'h0E0F_0000;
+        
         #10;
-
-        win = 32'h0C08_0400;
-      
-        #10;
-
-        datain = 32'h0000_0001;
-       
-
-        #10;
-
-        datain = 32'h0000_0502;
-
-        #10;
-
-        datain = 32'h0009_0603;
-
-        #10;
-
-        datain = 32'h0D0A_0704;
-
-        #10;
-
-        datain = 32'h0E0B_0800;
-
-        #10;
-
-        datain = 32'h0F0C_0000;
-
-        #10;
-
+        
         datain = 32'h1000_0000;
 
-        #10;
-
-        datain = 32'h0000_0015;
-
-        #10;
-
-        datain = 32'h0000_1D00;
-
-        #10;
-
-        datain = 32'h0021_0000;
-
-        #10;
-
-        datain = 32'h0400_0000;
-
-        #10;
-
-        datain = 32'h0000_0000;
-       
-
-        #30;
-
-    
-        win = 32'h000C_030A;
-
-        #10;
-
-        win = 32'h00AA_0B02;
-
-        #10;
-
-        win = 32'h000C_010A;
-
-        #10;
-
-        win = 32'h0000_0000;
-    
-
-        #10;
-
-        datain = 32'h0000_0000;
-    
-
-        #10;
-
-        datain = 32'h0000_AA00;
-
-        #10;
-
-        datain = 32'h00DD_BB00;
-
-        #10;
-
-        datain = 32'h01EE_CC00;
-
-        #10;
-
-        datain = 32'h01FF_0000;
-
-        #10;
-
-        datain = 32'h0900_0000;
-    
-
-        #10;
-
-        datain = 32'h0000_0000;
 
         #30;
  end
