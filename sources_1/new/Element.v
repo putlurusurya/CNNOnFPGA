@@ -27,7 +27,7 @@ module element
     input reset,
     input wire [data_size-1:0] in_a,
     input wire [data_size-1:0] in_b,
-    output reg [2*data_size:0] out_c,
+    output reg [data_size-1:0] out_c,
     output reg [data_size-1:0] out_a,
     output reg [data_size-1:0] out_b
     );
