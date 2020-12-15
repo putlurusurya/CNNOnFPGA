@@ -2,7 +2,8 @@
 
 # Python
 
-Python notebook contains code for converting onnx model into a python dictionay
+Python notebook contains code for converting onnx model into a python dictionary
+
 pending - Generating a set of instructions
 
 # Modules
@@ -20,21 +21,28 @@ Pending
 
 # Instruction set:-
 
-Each instruction lenght tbd
+Each instruction lenght - 64 bit
 
-opcode:- 5 bit 
+opcode:- 8 bit
+ 
+@dimension1
+@dimension2
 
-read_inputs
-read_weights
-fillfifo
-convolution
-relu
-pooling
-store_outputs
-write_outputs
-reset_total
-reset_fifo
-reset_systolic
+Tbd
+
+instructions as of now
+
+* read_inputs
+* read_weights
+* fillfifo
+* convolution
+* relu
+* pooling
+* store_outputs
+* write_outputs
+* reset_total
+* reset_fifo
+* reset_systolic
 
 Reference
 https://github.com/atulapra/8-bit-processor
