@@ -11,11 +11,17 @@ pending - Generating a set of instructions
 * Systolic array
 * weight and data fifo
 * 2*2 max pooling
-* BlockRam
+* BlockRam IP integration and weight and data filling
 * RELU, Sigmoid, Softmax
 
 Pending
 * Control logic
+	* Collecting output from sys arr and passing to activation and pooling layers
+	* redirecting outputs 
+	* instruction decode
+	* pipelining
+	* If possible fused layer convolution
+
 * Top module
 
 

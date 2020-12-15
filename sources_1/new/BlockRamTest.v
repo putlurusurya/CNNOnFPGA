@@ -21,16 +21,17 @@
 
 
 module BlockRamTest(
-    input [31:0] address,
+    input [10:0] address,
     input clk,
     input en,
+    input wen,
     input [7:0] datain,
-    output read
+    output [7:0] read
 );
     WeightBRAM your_instance_name (
   .clka(clk),    // input wire clka
   .ena(en),      // input wire ena
-  .wea(1'b1),      // input wire [0 : 0] wea
+  .wea(wen),      // input wire [0 : 0] wea
   .addra(address),  // input wire [10 : 0] addra
   .dina(datain),    // input wire [7 : 0] dina
   .douta(read)  // output wire [7 : 0] douta
