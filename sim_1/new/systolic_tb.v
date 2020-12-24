@@ -5,9 +5,9 @@ module systolic_tb;
  reg reset;
 
 
- reg [31:0] datain;
+ reg [15:0] datain;
  reg [31:0] win;
- wire [127:0]  macout;
+ wire [15:0]  macout;
 
 
 
@@ -23,51 +23,36 @@ systolic_array uut (
 initial
 begin
   // Initialize Inputs
-  clk = 0;
+        clk = 0;
 
 
 
   // Wait 100 ns for global reset to finish
-   reset = 1;
-  #20 reset = 0;
+        reset = 0;
+        clk = 1'b0;
+        
+        #20;
+         reset = 1;
 
-    clk = 1'b0;
-        datain = 32'h0000_0000;
-        win = 32'h0000_0000;
+        
+        win=32'h01020304;
+        
 
+        
+
+        datain = 16'h0004;
 
         #10;
 
-        win = 32'h0403_0201;
-        datain = 32'h0100_0000;
- 
-
-        #10;
-
-        win = 32'h0506_0708;
-        datain = 32'h0203_0000;
+        datain = 16'h0302;
         
         #10;
         
-        win = 32'h090A_0B0C;
-        datain = 32'h0405_0600;
+        datain = 16'h0600;
         
         #10;
-        
-        datain = 32'h0708_090A;
-        
-        #10;
-        
-        datain = 32'h0B0C_0D00;
-        
-        #10;
-        
-        datain = 32'h0E0F_0000;
-        
-        #10;
-        
-        datain = 32'h1000_0000;
-
+     
+        datain=0;
 
         #30;
  end

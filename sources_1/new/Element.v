@@ -27,21 +27,19 @@ module element
     input reset,
     input wire signed [data_size-1:0] in_a,
     input wire signed [data_size-1:0] in_b,
+    input wire signed [data_size-1:0] in_c,
     output reg signed [data_size-1:0] out_c,
-    output reg signed [data_size-1:0] out_a,
-    output reg signed [data_size-1:0] out_b
+    output reg signed [data_size-1:0] out_a
     );
          
          always @(posedge clk or negedge reset)begin
-            if(reset) begin
+            if(!reset) begin
               out_a<=8'b00000000;
-              out_b<=8'b00000000;
               out_c<=8'b00000000;
             end
             else begin  
-              out_c<=8'b00000000|out_c+in_a*in_b;
+              out_c<=in_c+in_a*in_b;
               out_a<=in_a;
-              out_b<=in_b;
             end
          end
          
