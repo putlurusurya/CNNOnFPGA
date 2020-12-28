@@ -20,14 +20,14 @@
 //////////////////////////////////////////////////////////////////////////////////
 module reluArr#(
     parameter data_width = 8,
-	parameter no_relu = 8,
-	localparam arr_width = data_width*no_relu
+	parameter array_size = 8,
+	localparam arr_width = data_width*array_size
 )(
 	input en,
 	input [arr_width-1:0] in,
 	output wire [arr_width-1:0] out
 );
-	relufunc relu_arr[no_relu-1:0] (
+	relufunc relu_arr[array_size-1:0] (
         .en (en),
 		.in (in),
 		.out(out)

@@ -1,67 +1,34 @@
-
-module fifo(
-	input clk,
-	input en,
-	input rd,
-	input wr,
-	input reset,
-	input [7:0] dataIn,
-	output reg [7:0] dataOut,
-	output empty,
-	output full
+module fifo_array#(
+	parameter fifo_depth = 256,
+	parameter data_size = 8,
+	parameter log_depth = 3,        // log2 of fifo_depth for tracking position of wptr and rptr
+	parameter array_size = 9        // log2 of fifo_depth for tracking position of wptr and rptr
+)(
+	input r_clk,
+	input w_clk,
+	input [array_size-1:0] r_en,
+	input [array_size-1:0] w_en,
+	input clear,
+	input [data_size-1:0] dataIn,
+	output [array_size*data_size-1:0] dataOut,
+	output [array_size-1:0] empty,
+	output [array_size-1:0] full
 );
-	reg [2:0] rptr,wptr;
-	reg [7:0] dataWr [7:0];
-	wire [7:0] dataRd [7:0];
-
-	genvar i;
-	generate 
-		for(i=0; i<8; i=i+1) begin
-			dff_ node(.clk(clk),.reset(reset),.en(en),.d(dataWr[i]),.q(dataRd[i]));
-		end
-	endgenerate
-	
-	assign full = ( (wptr == 3'b111) & (rptr == 3'b000) ? 1 : 0 );
-	assign empty = (wptr == rptr) ? 1 : 0;
-
-	always@(posedge clk or posedge reset)
-	begin
-		if(reset & en) begin
-			rptr = 0; wptr = 0; dataOut = 0;
-			dataWr[0] = 0; dataWr[1] = 0;
-			dataWr[2] = 0; dataWr[3] = 0;	
-			dataWr[4] = 0; dataWr[5] = 0;
-			dataWr[6] = 0; dataWr[7] = 0;
-		end
-		if(wr & en & ~full & ~reset) begin
-			dataWr[wptr] = dataIn;
-			wptr = wptr + 1;
-		end
-		if(rd & en & ~empty & ~reset) begin
-			dataOut = dataRd[rptr];
-			rptr = rptr + 1;
-		end
-	end
-endmodule
-
-module dff_(
-    input clk,
-    input reset,
-    input en,
-    input [7:0] d,
-    output reg [7:0] q
-);
-
-    always @(posedge clk) begin
-        if (reset) begin
-            q = 0;
+    genvar i;
+    generate
+        for(i=0;i<array_size;i=i+1)begin
+            fifo fifoarr(
+            .r_clk(r_clk),
+            .w_clk(w_clk),
+            .r_en(r_en[i]),
+            .w_en(w_en[i]),
+            .clear(clear),
+            .full(full[i]),
+            .empty(empty[i]),
+            .dataIn(dataIn),
+            .dataOut(dataOut[(i+1)*data_size-1:i*data_size])
+             ); 
         end
-        else if (en) begin
-            q = d;
-        end  
-        else begin  
-            q = q;
-        end  
-    end
-endmodule
 
+    endgenerate
+endmodule

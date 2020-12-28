@@ -3,11 +3,14 @@ module systolic_tb;
  // Inputs
  reg clk;
  reg reset;
+parameter array_size = 4 ;
+localparam data_size=8;
+localparam weight_size=8*array_size*array_size;
+localparam mac_size=8*array_size;
 
-
- reg [15:0] datain;
- reg [31:0] win;
- wire [15:0]  macout;
+ reg [data_size*array_size-1:0] datain;
+ reg [weight_size-1:0] win;
+ wire [mac_size-1:0]  macout;
 
 
 
@@ -35,26 +38,28 @@ begin
          reset = 1;
 
         
-        win=32'h01020304;
-        
+        win=128'h100f_0e0d_0c0b_0a09_0807_0605_0403_0201;
 
         
 
-        datain = 16'h0004;
+        datain = 32'h0000_0001;
 
         #10;
 
-        datain = 16'h0302;
+        datain = 32'h0000_0200;
         
         #10;
-        
-        datain = 16'h0600;
-        
-        #10;
-     
-        datain=0;
 
+        datain = 32'h0003_0000;
+        
+        #10;
+
+        datain = 32'h0400_0000;
+        
+       
+        
         #30;
+        $finish;
  end
  
  initial begin

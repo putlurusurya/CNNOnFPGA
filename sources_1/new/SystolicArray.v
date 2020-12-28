@@ -22,7 +22,7 @@
 
 
 module systolic_array#(
-    parameter array_size = 2 ,
+    parameter array_size = 9 ,
     localparam data_size=8,
     localparam weight_size=8*array_size*array_size,
     localparam mac_size=8*array_size
