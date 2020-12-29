@@ -1,4 +1,26 @@
-module fifo_array#(
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 29.12.2020 16:36:57
+// Design Name: 
+// Module Name: test
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module test#(
 	parameter fifo_depth = 256,
 	parameter data_size = 8,
 	parameter log_depth = 3,        // log2 of fifo_depth for tracking position of wptr and rptr

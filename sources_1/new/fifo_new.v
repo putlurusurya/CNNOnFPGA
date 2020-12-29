@@ -30,22 +30,22 @@ module fifo#(
 
 	always@(posedge clear)
 	begin
-		rptr = 0; wptr = 0; dataOut = 0;
+		rptr <= 0; wptr <= 0; dataOut <= 0;
 	end
 
 	always@(posedge w_clk)
 	begin
 		if(w_en & ~full & ~clear) begin
-			dataWr[wptr] = dataIn;
-			wptr = wptr + 1;
+			dataWr[wptr] <= dataIn;
+			wptr <= wptr + 1;
 		end
 	end	
 
 	always@(posedge r_clk)
 	begin
 		if(r_en & ~empty & ~clear) begin
-			dataOut = dataRd[rptr];
-			rptr = rptr + 1;
+			dataOut <= dataRd[rptr];
+			rptr <= rptr + 1;
 		end
 	end
 endmodule
@@ -62,13 +62,13 @@ module dff_#(
 
     always @(posedge clk) begin
         if (reset) begin
-            q = 0;
+            q <= 0;
         end
         else if (en) begin
-            q = d;
+            q <= d;
         end  
         else begin  
-            q = q;
+            q <= q;
         end  
     end
 endmodule
