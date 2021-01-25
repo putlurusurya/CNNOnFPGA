@@ -30,6 +30,8 @@ module top_module#(
     input s_clk,
     input w_clk,
     input reset,
+    input s_reset,
+    input clear,
     input enable,
     output [mac_size-1:0] macout,
     input [19:0] initial_address,
@@ -37,26 +39,25 @@ module top_module#(
     input [dim_data_size-1:0] image_height,
     input [dim_data_size-1:0] image_width,
     input [weight_size-1:0] weightin,
-    input [array_size-1:0] r_en
+    input [array_size-1:0] r_en,
+    output [data_size*array_size-1:0] dataout,
+    output [data_size-1:0] datain,
+    output [array_size-1:0] w_en,
+    output [array_size-1:0] full,
+    output [array_size-1:0] empty,
+    output done
     );
-    
-    wire [data_size-1:0] datain;
-    wire [data_size*array_size-1:0] dataout;
-    
-    wire [array_size-1:0] w_en;
-    wire [array_size-1:0] full;
-    wire [array_size-1:0] empty;
-    wire done;
+
     wire [2:0] state;
     
-    systolic_array s_array(
-     .clk(s_clk),
-     .reset(reset),
-     .datain(dataout),
-     .weightin(weightin),
-     .macout(macout)
-    );
     
+    systolic_array s_ar(
+        .clk(s_clk),
+        .reset(s_reset),
+        .datain(dataout),
+        .weightin(weightin),
+        .macout(macout)
+    );
     
     fifo_array f_arr(
             .r_clk(s_clk),
@@ -66,8 +67,8 @@ module top_module#(
             .clear(clear),
             .full(full),
             .empty(empty),
-            .dataIn(datain),
-            .dataOut(dataout)
+            .in_bus(datain),
+            .out_bus(dataout)
              ); 
              
       fifo_fill_control f_c(

@@ -20,10 +20,11 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
+
 module fifo_tb;
     parameter fifo_depth = 256;
 	parameter data_size = 8;
-	parameter log_depth = 3;       // log2 of fifo_depth for tracking position of wptr and rptr
+	parameter log_depth = 8;       // log2 of fifo_depth for tracking position of wptr and rptr
 	parameter array_size = 9; 
 	reg s_clk;
 	reg w_clk;
@@ -55,22 +56,6 @@ module fifo_tb;
 		r_en<=0;
 		clear<=0;
 		datain<=8'h01;
-		#10;
-		datain<=8'h02;
-		#10;
-		datain<=8'h03;
-		#10;
-		datain<=8'h04;
-		#10;
-		datain<=8'h05;
-		#10;
-		datain<=8'h06;
-		#10;
-		datain<=8'h07;
-		#10;
-		datain<=8'h08;
-		#10;
-		datain<=8'h09;
 		#10;
 		w_en=0;
 		r_en<=1;

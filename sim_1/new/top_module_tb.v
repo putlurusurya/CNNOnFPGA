@@ -38,6 +38,16 @@ module top_module_tb;
     reg enable;
     reg [weight_size-1:0] weight_in;
     reg [array_size-1:0] r_en;
+    wire [array_size-1:0] w_en;
+    wire [data_size*array_size-1:0] dataout;
+    wire [data_size-1:0] datain;
+    wire [array_size-1:0] full;
+    wire [array_size-1:0] empty;
+    wire done;
+    reg clear;
+    reg s_reset;
+    integer times;
+    integer i;
    
     top_module uut(
         .s_clk(s_clk),
@@ -50,7 +60,15 @@ module top_module_tb;
         .weightin(weight_in),
         .reset(reset),
         .enable(enable),
-        .r_en(ren)
+        .r_en(r_en),
+        .datain(datain),
+        .dataout(dataout),
+        .w_en(w_en),
+        .full(full),
+        .empty(empty),
+        .done(done),
+        .clear(clear),
+        .s_reset(s_reset)
     );
     initial
     begin
@@ -58,16 +76,40 @@ module top_module_tb;
             image_height<=5;
             image_width<=5;
             initial_address<=0;
-            weight_in<=648'h0000000000000000090000000000000000080000000000000000007000000000000000006000000000000000005000000000000000004000000000000000003000000000000000002000000000000000001;
+            times<=25;
+            weight_in<=648'h000000000000000703_000000000000000002000000000000000001000000000000000003000000000000000002000000000000000001000000000000000003000000000000000002000000000000000001;
             reset <= 0;
+            s_reset<=0;
+            clear <=1;
             enable<=1;
             s_clk <= 1'b0;
             w_clk <= 1'b0;
+            r_en <= 9'b000000000;
             #10;
             reset<=1;
+            clear<=0;
+            #285;
+            r_en<=9'b000000001;;
+            s_reset<=1;
+            #200;
+            r_en<=9'b000000011;
+            #200;
+            r_en<=9'b000000111;
+            #200;
+            r_en<=9'b000001111;
+            #200;
+            r_en<=9'b000011111;
+            #200;
+            r_en<=9'b000111111;
+            #200;
+            r_en<=9'b001111111;
+            #200;
+            r_en<=9'b011111111;
+            #200;
+            r_en<=9'b111111111;
             #200;
             r_en<=9'h1ff;
-            #10000;
+            
     end
      initial begin
       forever #100 s_clk <= ~s_clk;

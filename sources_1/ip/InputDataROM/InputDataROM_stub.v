@@ -1,7 +1,7 @@
 // Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 // --------------------------------------------------------------------------------
 // Tool Version: Vivado v.2020.1 (win64) Build 2902540 Wed May 27 19:54:49 MDT 2020
-// Date        : Fri Dec 25 18:52:32 2020
+// Date        : Mon Jan  4 18:09:13 2021
 // Host        : LAPTOP-R5TEM1UP running 64-bit major release  (build 9200)
 // Command     : write_verilog -force -mode synth_stub
 //               g:/CNNSONFPGA/Project/Project.srcs/sources_1/ip/InputDataROM/InputDataROM_stub.v

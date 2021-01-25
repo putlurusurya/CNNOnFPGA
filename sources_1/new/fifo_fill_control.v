@@ -28,6 +28,7 @@ module fifo_fill_control#(
     input clk,
     input [19:0] initial_address,
     input enable,
+    input [array_size-1:0] write_enable_in,
     input reset,
     input [dim_data_size-1:0] weight_size,
     input [dim_data_size-1:0] image_height,
@@ -57,6 +58,7 @@ module fifo_fill_control#(
     localparam column_change=3'b011;
     localparam init=3'b000;
     localparam finish=3'b100;
+    localparam stay=3'b101;
     
     
     
@@ -91,6 +93,7 @@ module fifo_fill_control#(
                     
                 end
                 row_iter:begin
+                    
                     if(row==0)begin
                         c_address<=t_address;  
                         write_enable<=9'b0_0000_0001;
@@ -103,6 +106,7 @@ module fifo_fill_control#(
                         if(row==(weight_size*weight_size))begin
                             if(column==image_width-weight_size)begin
                                 if(iter==image_height-weight_size)begin
+                                    
                                     state<=finish;
                                 end
                                 else 
@@ -133,6 +137,9 @@ module fifo_fill_control#(
                     row<=0;
                     state<=row_iter;
                     iter<=iter+1;
+                end
+                stay:begin
+                    
                 end
                 finish:begin
                     done<=1;
