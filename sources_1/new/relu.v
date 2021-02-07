@@ -20,27 +20,39 @@
 //////////////////////////////////////////////////////////////////////////////////
 module reluArr#(
     parameter data_width = 8,
-	parameter array_size = 8,
+	parameter array_size = 9,
 	localparam arr_width = data_width*array_size
 )(
-	input en,
+    input clk,
+	input [array_size-1:0] en,
 	input [arr_width-1:0] in,
-	output wire [arr_width-1:0] out
+	output [arr_width-1:0] out0
 );
-	relufunc relu_arr[array_size-1:0] (
-        .en (en),
-		.in (in),
-		.out(out)
-	);
+    
+    genvar i;
+    generate
+    for(i=0;i<array_size;i=i+1)begin
+        relufunc relu_arr[array_size-1:0] (
+            .clk(clk),
+            .en (en[i]),
+            .in (in[(i+1)*data_width-1:i*data_width]),
+            .out(out0[(i+1)*data_width-1:i*data_width])
+        );
+        end
+	endgenerate
+	
+	
 
 endmodule 
 module relufunc#(
     parameter data_width = 8
 )(
+    input clk,
     input en,
     input signed [data_width-1:0] in,
-    output wire signed [data_width-1:0] out
+    output reg signed [data_width-1:0] out
 );
-    assign out = (in > 0 && en) ? in : 0;
-
+    always@(posedge clk)begin
+        out <= (in > 0 && en) ? in : 0;
+    end
 endmodule

@@ -35,9 +35,11 @@ module fifo_fill_control_tb;
     wire [array_size-1:0] write_enable;
     wire done;
     wire [2:0] s;
-fifo_fill_control uut(
+    reg [array_size-1:0] write_enable_in;
+fifo_fill_control_2 uut(
     .clk(clk),
     .initial_address(initial_address),
+    .write_enable_in(write_enable_in),
     .enable(enable),
     .reset(reset),
     .state(s),
@@ -46,9 +48,8 @@ fifo_fill_control uut(
     .image_width(image_width),
     .bus(bus),
     .write_enable_out(write_enable),
-    .done(done)
+    .completed(done)
 );
-
 
 initial
 begin
@@ -59,8 +60,11 @@ begin
         reset <= 0;
         enable<=1;
         clk <= 1'b0;
-        #10;
+        write_enable_in<=9'b111111111;
+        #50;
         reset<=1;
+        #10;
+        write_enable_in<=9'b000000000;
 end
  
  initial begin

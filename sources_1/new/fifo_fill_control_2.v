@@ -35,15 +35,16 @@ module fifo_fill_control_2#(
     input [dim_data_size-1:0] image_width,
     output [data_size-1:0] bus,
     output reg [array_size-1:0] write_enable_out,
-    output reg completed,
-    output reg [2:0] state
+    output reg completed
         );
+    reg [2:0] state;
     reg [array_size-1:0] done;
     reg [19:0] c_address;
     reg [19:0] t_address [array_size-1:0];
     wire [19:0] address;
     reg [array_size-1:0] write_enable;
     reg [array_size-1:0] data1_d1;
+    reg [2:0] state1,state2,state3,state4,state5;
     
     
     assign address=c_address;
@@ -69,35 +70,36 @@ module fifo_fill_control_2#(
       data1_d1 <= write_enable;       
       write_enable_out <= data1_d1;    
      end
-
+    integer r;
     always @(posedge clk or negedge reset) begin
         if(!reset)begin 
             state<=init;
             done<=0;
             for(i=0;i<array_size;i=i+1)begin
+                r=i%weight_size;
                 if(i==0)begin
                     t_address[i] <= initial_address;
                 end
-                else if(i%weight_size==0)begin
-                    t_address[i] <= t_address[i-weight_size] + image_width;  
+                else if(r==0)begin
+                    t_address[i] <= initial_address + (i/weight_size)*image_width ;  
                 end
                 else begin
-                    t_address[i]<=t_address[i-1]+1;
+                    t_address[i] <= initial_address + ((i-r)/weight_size)*image_width + (r);
                 end
             end
+
         end
         else if(enable)begin
             case(state)
                 
                 init:begin
+                    write_enable<=9'b0_0000_0000;
+                    state<=row_iter;
+                    j<=0;
                     for(i=0;i<array_size;i=i+1)begin
                         row[i]<=0;
                         iter[i]<=0;
                     end
-                    
-                    write_enable<=9'b0_0000_0000;
-                    state<=row_iter;
-                    j<=0;
                 end
                 
                 row_iter:begin
@@ -127,12 +129,15 @@ module fifo_fill_control_2#(
                     else begin
                         if(j==array_size-1)begin
                             if(done==9'b1_1111_1111)begin
+                                write_enable<=9'b0_0000_0000;
                                 state<=finish;
                             end 
                             else
+                                write_enable<=9'b0_0000_0000;
                                 j<=0;
                         end
                         else begin
+                            write_enable<=9'b0_0000_0000;
                             j<=j+1;
                         end
                     end
