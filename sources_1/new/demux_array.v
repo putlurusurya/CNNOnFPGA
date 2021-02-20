@@ -22,9 +22,9 @@
 
 module demux_array#(
   parameter array_size = 9,
-  parameter data_size = 8
+  parameter data_size = 16
 )(input [data_size*array_size-1:0]d_in,
-  input [1:0] sel ,
+  input [3:0] sel ,
   output [data_size*array_size-1:0]d_out_1,
   output [data_size*array_size-1:0]d_out_2,
   output [data_size*array_size-1:0]d_out_3,

@@ -23,16 +23,18 @@
 
 module systolic_array#(
     parameter array_size = 9 ,
-    localparam data_size=8,
-    localparam weight_size=8*array_size*array_size,
-    localparam mac_size=8*array_size
+    parameter data_size=16,
+    parameter weight_size=data_size*array_size*array_size,
+    parameter mac_size=data_size*array_size
     )
 (
     input clk,
     input reset,
     input [data_size*array_size-1:0] datain,
     input [weight_size-1:0] weightin,
+
     output [mac_size-1:0] macout
+    
 
     );
     
@@ -43,9 +45,9 @@ module systolic_array#(
     
     generate 
         for(i=0;i<array_size;i=i+1)begin
-        
+           
             assign data_wire[i][0]=datain[(i+1)*data_size-1:i*data_size];
-            assign macwire[0][i]=8'b00000000;
+            assign macwire[0][i]=16'b00000000;
             
         end
     endgenerate

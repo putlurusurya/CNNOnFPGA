@@ -19,7 +19,7 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 module maxPooling#(
-    parameter data_size=8
+    parameter data_size=16
 )(
     input clk,
 	input [data_size-1:0] input1,
@@ -31,7 +31,7 @@ module maxPooling#(
 	output reg maxPoolingDone
     );
 	
-	reg [data_size-1:0] initialMax = 8'b10000000;
+	reg [data_size-1:0] initialMax = 16'b1000000000000000;
 	reg [data_size-1:0] tempOutput;
 	
 	always @ (posedge clk) begin

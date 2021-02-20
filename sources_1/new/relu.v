@@ -19,7 +19,7 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 module reluArr#(
-    parameter data_width = 8,
+    parameter data_width = 16,
 	parameter array_size = 9,
 	localparam arr_width = data_width*array_size
 )(
@@ -45,7 +45,7 @@ module reluArr#(
 
 endmodule 
 module relufunc#(
-    parameter data_width = 8
+    parameter data_width = 16
 )(
     input clk,
     input en,

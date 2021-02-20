@@ -31,32 +31,36 @@ module fifo_fill_control_tb;
     reg [dim_data_size-1:0] weight_size;
     reg [dim_data_size-1:0] image_height;
     reg [dim_data_size-1:0] image_width;
+    reg [dim_data_size-1:0] offset;
     wire [data_size-1:0] bus;
     wire [array_size-1:0] write_enable;
+
     wire done;
-    wire [2:0] s;
+
     reg [array_size-1:0] write_enable_in;
-fifo_fill_control_2 uut(
+input_data_rom uut(
     .clk(clk),
     .initial_address(initial_address),
     .write_enable_in(write_enable_in),
     .enable(enable),
     .reset(reset),
-    .state(s),
     .weight_size(weight_size),
     .image_height(image_height),
     .image_width(image_width),
     .bus(bus),
+    .offset(offset),
     .write_enable_out(write_enable),
     .completed(done)
+    
 );
 
 initial
 begin
-        weight_size<=3;
+        weight_size<=2;
         image_height<=5;
         image_width<=5;
         initial_address<=0;
+        offset<=5;
         reset <= 0;
         enable<=1;
         clk <= 1'b0;

@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module WeightROM#(
+module WeightROMdfrg#(
         parameter data_size=8
     )(
         input clk,

@@ -21,7 +21,7 @@
 
 module element
 #(
-    parameter data_size=8
+    parameter data_size=16
     )
 (   input clk,
     input reset,
@@ -34,8 +34,8 @@ module element
          
          always @(posedge clk or negedge reset)begin
             if(!reset) begin
-              out_a<=8'b00000000;
-              out_c<=8'b00000000;
+              out_a<=16'b00000000;
+              out_c<=16'b00000000;
             end
             
             else begin  

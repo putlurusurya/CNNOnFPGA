@@ -1,4 +1,4 @@
-// (c) Copyright 1995-2020 Xilinx, Inc. All rights reserved.
+// (c) Copyright 1995-2021 Xilinx, Inc. All rights reserved.
 // 
 // This file contains confidential and proprietary information
 // of Xilinx, Inc. and is protected under U.S. and
@@ -58,9 +58,15 @@ blk_mem_gen_0 your_instance_name (
   .clka(clka),    // input wire clka
   .ena(ena),      // input wire ena
   .wea(wea),      // input wire [0 : 0] wea
-  .addra(addra),  // input wire [3 : 0] addra
+  .addra(addra),  // input wire [14 : 0] addra
   .dina(dina),    // input wire [7 : 0] dina
-  .douta(douta)  // output wire [7 : 0] douta
+  .douta(douta),  // output wire [7 : 0] douta
+  .clkb(clkb),    // input wire clkb
+  .enb(enb),      // input wire enb
+  .web(web),      // input wire [0 : 0] web
+  .addrb(addrb),  // input wire [14 : 0] addrb
+  .dinb(dinb),    // input wire [7 : 0] dinb
+  .doutb(doutb)  // output wire [7 : 0] doutb
 );
 // INST_TAG_END ------ End INSTANTIATION Template ---------
 

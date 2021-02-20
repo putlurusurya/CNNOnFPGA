@@ -1,7 +1,7 @@
 module fifo_array#(
-	parameter fifo_depth = 256,
-	parameter data_size = 8,
-	parameter log_depth = 8,        // log2 of fifo_depth for tracking position of wptr and rptr
+	parameter fifo_depth = 4096,
+	parameter data_size = 16,
+	parameter log_depth = 12,        // log2 of fifo_depth for tracking position of wptr and rptr
 	parameter array_size = 9       // log2 of fifo_depth for tracking position of wptr and rptr
 )(
 	input r_clk,

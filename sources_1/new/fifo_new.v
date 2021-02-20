@@ -1,7 +1,6 @@
-
 module fifo#(
 	parameter fifo_depth = 4096,
-	parameter data_size = 8,
+	parameter data_size = 16,
 	parameter log_depth = 12        // log2 of fifo_depth for tracking position of wptr and rptr
 )(
 	input r_clk,
@@ -11,31 +10,36 @@ module fifo#(
 	input clear,
 	input [data_size-1:0] dataIn,
 	output reg [data_size-1:0] dataOut,
-	output reg empty,
-	output reg full
+	output empty,
+	output full
 );
 	reg [log_depth-1:0] rptr,wptr;
 	reg [data_size-1:0] dataWr [fifo_depth-1:0];
 	wire [data_size-1:0] dataRd [fifo_depth-1:0];
-	reg temp_w_en;
-	
+	reg [data_size-1:0] temp_w_en;
+	always@(posedge w_clk)    
+     begin
+        temp_w_en<=w_en;
+     end
 	integer j;
 	genvar i;
 	generate 
 		for(i=0; i<fifo_depth; i=i+1) begin
 			dff_ node(.clk(w_clk),.reset(clear),.en(temp_w_en),.d(dataWr[i]),.q(dataRd[i]));
 		end
-	endgenerate 
+	endgenerate
 	
-	always@(posedge w_clk or negedge clear )
+	assign full = ( (wptr == 12'b1111_1111_1111) & (rptr == 12'b0000_0000_0000) ? 1 : 0 );
+	assign empty = ((wptr == rptr) ? 1 : 0);
+
+	
+
+	always@(posedge w_clk or negedge clear)
 	begin
-	    temp_w_en<=w_en;
-	    
-	    full <= ( (wptr == 12'b1111_1111_1111) & (rptr == 3'b0000_0000_0000) ? 1 : 0 );
 	    if(~clear)begin
-	       wptr<=0; 
+	        wptr <= 0;
 	    end
-		else if(w_en & ~full & clear) begin
+		if(w_en & ~full) begin
 			dataWr[wptr] <= dataIn;
 			wptr <= wptr + 1;
 		end
@@ -43,12 +47,11 @@ module fifo#(
 
 	always@(posedge r_clk or negedge clear)
 	begin
-	     empty <= ((wptr == rptr) ? 1 : 0);
-	     if(~clear)begin
-	       rptr <=0;
-	       dataOut<=0;
-	     end
-		 else if(r_en & ~empty & ~clear) begin
+	    if(~clear)begin
+	        rptr <= 0;
+	        dataOut <= 0;
+	    end
+		if(r_en & ~empty ) begin
 			dataOut <= dataRd[rptr];
 			rptr <= rptr + 1;
 		end
@@ -56,7 +59,7 @@ module fifo#(
 endmodule
 
 module dff_#(
-	parameter data_size = 8
+	parameter data_size = 16
 )(
     input clk,
     input reset,
@@ -77,4 +80,3 @@ module dff_#(
         end  
     end
 endmodule
-

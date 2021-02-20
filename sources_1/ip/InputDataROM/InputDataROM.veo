@@ -1,4 +1,4 @@
-// (c) Copyright 1995-2020 Xilinx, Inc. All rights reserved.
+// (c) Copyright 1995-2021 Xilinx, Inc. All rights reserved.
 // 
 // This file contains confidential and proprietary information
 // of Xilinx, Inc. and is protected under U.S. and
@@ -56,8 +56,8 @@
 //----------- Begin Cut here for INSTANTIATION Template ---// INST_TAG
 InputDataROM your_instance_name (
   .clka(clka),    // input wire clka
-  .addra(addra),  // input wire [19 : 0] addra
-  .douta(douta)  // output wire [7 : 0] douta
+  .addra(addra),  // input wire [13 : 0] addra
+  .douta(douta)  // output wire [15 : 0] douta
 );
 // INST_TAG_END ------ End INSTANTIATION Template ---------
 

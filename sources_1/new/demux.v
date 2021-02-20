@@ -19,8 +19,8 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-module demux1_4#(parameter size=8)(
-    input [1:0] sel,
+module demux1_4#(parameter size=16)(
+    input [3:0] sel,
     input [size-1:0]d_in,
     output reg [size-1:0] d_out1,
     output reg [size-1:0] d_out2,
@@ -31,7 +31,7 @@ module demux1_4#(parameter size=8)(
       always @(d_in or sel)
         begin
           case(sel)
-            2'b00:
+            4'b0001:
               begin
               d_out1=d_in;
               d_out2=0;
@@ -39,7 +39,7 @@ module demux1_4#(parameter size=8)(
               d_out4=0;
               end
             
-            2'b01:
+            4'b0010:
               begin
                 d_out1=0;
                 d_out2=d_in;
@@ -47,7 +47,7 @@ module demux1_4#(parameter size=8)(
                 d_out4=0;
               end
             
-            2'b10:
+            4'b0100:
               begin
                 d_out1=0;
                 d_out2=0;
@@ -55,13 +55,19 @@ module demux1_4#(parameter size=8)(
                 d_out4=0;
               end
             
-            2'b11:
+            4'b1000:
               begin
                 d_out1=0;
                 d_out2=0;
                 d_out3=0;
                 d_out4=d_in;
               end
+            default:begin
+                d_out1=0;
+                d_out2=0;
+                d_out3=0;
+                d_out4=0;
+                end
           endcase   
     end
 endmodule
