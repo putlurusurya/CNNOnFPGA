@@ -21,12 +21,12 @@
 
 
 module input_data_rom#(
-        parameter data_size=8,
+        parameter data_size=16,
         parameter array_size=9,
-        parameter dim_data_size=8
+        parameter dim_data_size=16
     )(
         input clk,
-        input [19:0] initial_address,
+        input [13:0] initial_address,
         input enable,
         input [array_size-1:0] write_enable_in,
         input reset,
@@ -38,7 +38,7 @@ module input_data_rom#(
         output [array_size-1:0] write_enable_out,
         output  completed
     );
-    wire [19:0] c_address;
+    wire [13:0] c_address;
      InputDataROM InputROM (
       .clka(clk),    // input wire clka
       .addra(c_address),  // input wire [19 : 0] addra

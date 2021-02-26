@@ -3,8 +3,8 @@
 // Tool Version: Vivado v.2020.1 (win64) Build 2902540 Wed May 27 19:54:49 MDT 2020
 // Date        : Fri Feb 19 12:02:09 2021
 // Host        : LAPTOP-R5TEM1UP running 64-bit major release  (build 9200)
-// Command     : write_verilog -force -mode funcsim
-//               g:/CNNSONFPGA/Project/Project.srcs/sources_1/ip/weightRom/weightRom_sim_netlist.v
+// Command     : write_verilog -force -mode funcsim -rename_top weightRom -prefix
+//               weightRom_ weightRom_sim_netlist.v
 // Design      : weightRom
 // Purpose     : This verilog netlist is a functional simulation representation of the design and should not be modified
 //               or synthesized. This netlist cannot be used for SDF annotated simulation.
@@ -189,7 +189,6 @@ module weightRom
         .web(1'b0));
 endmodule
 
-(* ORIG_REF_NAME = "bindec" *) 
 module weightRom_bindec
    (ena_array,
     addra);
@@ -243,7 +242,6 @@ module weightRom_bindec
         .O(ena_array[5]));
 endmodule
 
-(* ORIG_REF_NAME = "blk_mem_gen_generic_cstr" *) 
 module weightRom_blk_mem_gen_generic_cstr
    (douta,
     clka,
@@ -428,7 +426,6 @@ module weightRom_blk_mem_gen_generic_cstr
         .ena_array(ena_array[2]));
 endmodule
 
-(* ORIG_REF_NAME = "blk_mem_gen_mux" *) 
 module weightRom_blk_mem_gen_mux
    (douta,
     addra,
@@ -784,7 +781,6 @@ module weightRom_blk_mem_gen_mux
         .R(1'b0));
 endmodule
 
-(* ORIG_REF_NAME = "blk_mem_gen_prim_width" *) 
 module weightRom_blk_mem_gen_prim_width
    (douta,
     clka,
@@ -1125,7 +1121,6 @@ module weightRom_blk_mem_gen_prim_width__parameterized9
         .ena_array(ena_array));
 endmodule
 
-(* ORIG_REF_NAME = "blk_mem_gen_prim_wrapper_init" *) 
 module weightRom_blk_mem_gen_prim_wrapper_init
    (douta,
     clka,
@@ -4708,7 +4703,6 @@ module weightRom_blk_mem_gen_prim_wrapper_init__parameterized9
         .WEBWE({1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0,1'b0}));
 endmodule
 
-(* ORIG_REF_NAME = "blk_mem_gen_top" *) 
 module weightRom_blk_mem_gen_top
    (douta,
     clka,
@@ -4752,7 +4746,7 @@ endmodule
 (* C_WEA_WIDTH = "1" *) (* C_WEB_WIDTH = "1" *) (* C_WRITE_DEPTH_A = "32768" *) 
 (* C_WRITE_DEPTH_B = "32768" *) (* C_WRITE_MODE_A = "WRITE_FIRST" *) (* C_WRITE_MODE_B = "WRITE_FIRST" *) 
 (* C_WRITE_WIDTH_A = "16" *) (* C_WRITE_WIDTH_B = "16" *) (* C_XDEVICEFAMILY = "artix7" *) 
-(* ORIG_REF_NAME = "blk_mem_gen_v8_4_4" *) (* downgradeipidentifiedwarnings = "yes" *) 
+(* downgradeipidentifiedwarnings = "yes" *) 
 module weightRom_blk_mem_gen_v8_4_4
    (clka,
     rsta,
@@ -4980,7 +4974,6 @@ module weightRom_blk_mem_gen_v8_4_4
         .douta(douta));
 endmodule
 
-(* ORIG_REF_NAME = "blk_mem_gen_v8_4_4_synth" *) 
 module weightRom_blk_mem_gen_v8_4_4_synth
    (douta,
     clka,

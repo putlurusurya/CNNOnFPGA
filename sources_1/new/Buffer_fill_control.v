@@ -19,53 +19,55 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-module output_fill (
+module output_fill #(
+    parameter dimdata_size=16
+)(
 	input w_clk,
 	input enable,
 	input reset,
 	input initial_address,
-	input [7:0] output_featuremapsize,
+	input [dimdata_size-1:0] output_featuremapsize,
 	input is_empty,
-	output reg c_address,
+	output reg [13:0] c_address,
 	output reg write_enable,
-	output reg read_enable
+	output reg done
 	);
-	
-	
-	
-	reg temp_address;
-		
-		
+
+    reg [1:0]state;
+	localparam init=2'b00;
+	localparam calc=2'b01;
+	localparam finish=2'b10;
+
 			
         always @(posedge w_clk or negedge reset)begin
                 if(~reset)
                     begin
-                        read_enable = 0;
-                        write_enable =0;
+                        write_enable <=0;
+                        c_address<=initial_address;
+                        state<=init;
+                        done<=0;
                     end
-                else if(enable)
-                    begin
-                        temp_address = initial_address;
-                        if(temp_address - initial_address <= output_featuremapsize)
-                            begin
-                                write_enable = 0;
-                                read_enable = 0;
+                else if(enable && (~is_empty)) begin
+                    case (state) 
+                        init:begin
+                            c_address<=initial_address;
+                            write_enable<=1;
+                            state<=calc;
+                            done<=0;
+                        end
+                        calc:begin
+                            c_address<=c_address+1;
+                            write_enable<=1;
+                            if(c_address-initial_address==output_featuremapsize)begin
+                                state<=finish;
                             end
-                            
-                        else
-                            begin
-                                write_enable = 1;
-                                read_enable = 1;
-                                c_address = temp_address;
-                            end
-                    end         
-                else
-                    begin
-                    
-                    read_enable = 0;
-                    write_enable =0;
-                    
-                    end
+                        end
+                        finish:begin
+                            write_enable<=0;
+                            done=1;
+                        end
+                    endcase
+                end
                     
         end
         

@@ -21,11 +21,11 @@
 
 
 module weight_fill_control_tb();
-    parameter data_size=8;
+    parameter data_size=16;
     parameter array_size=9;
-    parameter dim_data_size=8;
+    parameter dim_data_size=16;
     reg clk;
-    reg [13:0] initial_address;
+    reg [14:0] initial_address;
     reg enable;
     reg reset;
     reg [dim_data_size-1:0] weight_size;
@@ -47,7 +47,7 @@ module weight_fill_control_tb();
     initial
     begin
             weight_size<=3;
-            number_filters<=1;
+            number_filters<=9;
             initial_address<=0;
             reset <= 0;
             enable<=1;

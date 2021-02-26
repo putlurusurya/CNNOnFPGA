@@ -27,7 +27,7 @@ module weight_fill_control#(
     parameter dim_data_size=16								
 )(								
     input clk,								
-    input [13:0] initial_address,								
+    input [14:0] initial_address,								
     input enable,								
     input reset,								
     input [dim_data_size-1:0] weight_size,								
@@ -39,9 +39,9 @@ module weight_fill_control#(
     reg [2:0] state;								
     reg [2:0] state1;								
     reg [2:0] state2;								
-    reg [13:0] c_address;								
-    reg [13:0] c_address1;								
-    reg [13:0] c_address2;								
+    reg [14:0] c_address;								
+    reg [14:0] c_address1;								
+    reg [14:0] c_address2;								
     integer ncount;								
     integer ecount;								
     wire [data_size-1:0] bus;								
@@ -69,6 +69,7 @@ module weight_fill_control#(
             ecount<=0;								
             temp_weights<=0;								
         end								
+        
         else if(enable) begin								
             case (state)								
                 init:begin								
@@ -78,8 +79,7 @@ module weight_fill_control#(
                     end								
                  iter:begin								
                         								
-                        c_address2<=initial_address+(number_filters-1-ncount)*weight_size*weight_size+weight_size*weight_size-1-ecount;								
-                        								
+                        c_address2<=initial_address+(number_filters-1-ncount)*weight_size*weight_size+weight_size*weight_size-1-ecount;							
                         state<=delay1;								
                     end								
                  delay1:begin								

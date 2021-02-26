@@ -43,9 +43,9 @@ module output_fill_tb();
     #1
     enable = 1;
     #1
-    initial_address = 0x010;
+    initial_address = 0'h010;
     #1
-    output_featuremap_size = 7b'0001000;
+    output_featuremap_size = 7'b0001000;
     end
 
 endmodule

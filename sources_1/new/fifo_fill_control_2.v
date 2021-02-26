@@ -44,13 +44,17 @@ module fifo_fill_control_2#(
     wire [13:0] address;
     reg [array_size-1:0] write_enable;
     reg [array_size-1:0] data1_d1;
-    reg [2:0] state1,state2,state3,state4,state5;
+    reg [array_size-1:0] one;
+    reg [array_size-1:0] offset_ref;
+    
+
     
     
     assign address=c_address;
     
     integer row [array_size-1:0];
     integer iter [array_size-1:0];
+  
     integer i,j;
     
     localparam init=3'b000;
@@ -71,7 +75,12 @@ module fifo_fill_control_2#(
         if(!reset)begin 
             state<=init;
             done<=0;
+            write_enable_out<=0;
+            c_address<=0;
+            completed<=0;
+            one<=1;
             for(i=offset;i<array_size;i=i+1)begin
+                offset_ref[i]<=1;
                 r=(i-offset)%weight_size;
                 if(i==offset)begin
                     t_address[i] <= initial_address;
@@ -89,7 +98,7 @@ module fifo_fill_control_2#(
             case(state)
                 
                 init:begin
-                    write_enable<=9'b0_0000_0000;
+                    write_enable<=0;
                     state<=row_iter;
                     j<=offset;
                     for(i=0;i<array_size;i=i+1)begin
@@ -100,12 +109,12 @@ module fifo_fill_control_2#(
                 
                 row_iter:begin
                     if(done[j])begin
-                        write_enable<=9'b0_0000_0000;
+                        write_enable<=0;
                     end
                     if(write_enable_in[j]==0 && !done[j])begin
                         if(row[j]==image_width-weight_size)begin
                             c_address<=t_address[j]+row[j];
-                            write_enable<=9'b0_0000_0001<<j;
+                            write_enable<=one<<j-offset;
                             row[j]<=0;
                             if(iter[j]==image_height-weight_size)begin
                                 done[j]<=1;
@@ -118,22 +127,22 @@ module fifo_fill_control_2#(
                         end
                         else begin
                             c_address<=t_address[j]+row[j];
-                            write_enable<=9'b0_0000_0001<<j;
+                            write_enable<=one<<j-offset;
                             row[j]<=row[j]+1;
                         end
                     end
                     else begin
                         if(j==offset+weight_size*weight_size-1)begin
-                            if(done==9'b1_1110_0000)begin
-                                write_enable<=9'b0_0000_0000;
+                            if(done==offset_ref)begin
+                                write_enable<=0;
                                 state<=finish;
                             end 
                             else
-                                write_enable<=9'b0_0000_0000;
+                                write_enable<=0;
                                 j<=offset;
                         end
                         else begin
-                            write_enable<=9'b0_0000_0000;
+                            write_enable<=0;
                             j<=j+1;
                         end
                     end

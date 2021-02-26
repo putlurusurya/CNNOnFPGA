@@ -44,7 +44,7 @@ module top_module_tb;
     reg w_reset;
     
    
-    top_module uut(
+    top_module1 uut(
         .s_clk(s_clk),
         .w_clk(w_clk),
         .relu_out(relu_out),

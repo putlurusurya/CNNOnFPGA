@@ -21,11 +21,11 @@
 
 
 module fifo_fill_control_tb;
-    parameter data_size=8;
+    parameter data_size=16;
     parameter array_size=9;
-    parameter dim_data_size=8;
+    parameter dim_data_size=16;
     reg clk;
-    reg [19:0] initial_address;
+    reg [13:0] initial_address;
     reg enable;
     reg reset;
     reg [dim_data_size-1:0] weight_size;
@@ -68,7 +68,7 @@ begin
         #50;
         reset<=1;
         #10;
-        write_enable_in<=9'b000000000;
+        write_enable_in<=0;
 end
  
  initial begin
