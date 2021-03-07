@@ -19,40 +19,41 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 module reluArr#(
-    parameter data_width = 16,
-	parameter array_size = 9,
-	localparam arr_width = data_width*array_size
-)(
-    input clk,
-	input [array_size-1:0] en,
-	input [arr_width-1:0] in,
-	output [arr_width-1:0] out0
-);
+        parameter data_width = 16,
+        parameter array_size = 9,
+        localparam arr_width = data_width*array_size
+    )(
+        input clk,
+        input [array_size-1:0] en,
+        input [arr_width-1:0] in,
+        output [arr_width-1:0] out0
+    );
     
     genvar i;
     generate
-    for(i=0;i<array_size;i=i+1)begin
-        relufunc relu_arr[array_size-1:0] (
-            .clk(clk),
-            .en (en[i]),
-            .in (in[(i+1)*data_width-1:i*data_width]),
-            .out(out0[(i+1)*data_width-1:i*data_width])
-        );
+        for(i=0;i<array_size;i=i+1)begin
+            relufunc relu_arr (
+                .clk(clk),
+                .en (en[i]),
+                .in (in[(i+1)*data_width-1:i*data_width]),
+                .out(out0[(i+1)*data_width-1:i*data_width])
+            );
         end
 	endgenerate
-	
-	
 
 endmodule 
+
 module relufunc#(
     parameter data_width = 16
 )(
     input clk,
     input en,
-    input signed [data_width-1:0] in,
-    output reg signed [data_width-1:0] out
+    input [data_width-1:0] in,
+    output reg [data_width-1:0] out
 );
     always@(posedge clk)begin
-        out <= (in > 0 && en) ? in : 0;
+        if(en)begin
+            out <= ($signed(in) > 0) ? in : 0;
+        end
     end
 endmodule

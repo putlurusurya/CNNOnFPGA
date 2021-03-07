@@ -7,7 +7,8 @@ module fifo#(
 	input w_clk,
 	input r_en,
 	input w_en,
-	input clear,
+	input rclear,
+	input wclear,
 	input [data_size-1:0] dataIn,
 	output reg [data_size-1:0] dataOut,
 	output empty,
@@ -16,11 +17,8 @@ module fifo#(
 	reg [log_depth-1:0] rptr,wptr;
 	reg [data_size-1:0] dataWr [fifo_depth-1:0];
 	wire [data_size-1:0] dataRd [fifo_depth-1:0];
-	reg [data_size-1:0] temp_w_en;
-	always@(posedge w_clk)    
-     begin
-        temp_w_en<=w_en;
-     end
+	reg  temp_w_en;
+	
 	integer j;
 	genvar i;
 	generate 
@@ -34,24 +32,25 @@ module fifo#(
 
 	
 
-	always@(posedge w_clk or negedge clear)
+	always@(posedge w_clk or negedge wclear)
 	begin
-	    if(~clear)begin
+	    temp_w_en<=w_en;
+	    if(~wclear)begin
 	        wptr <= 0;
 	    end
-		if(w_en & ~full) begin
+		else if(w_en & ~full) begin
 			dataWr[wptr] <= dataIn;
 			wptr <= wptr + 1;
 		end
 	end	
 
-	always@(posedge r_clk or negedge clear)
+	always@(posedge r_clk or negedge rclear)
 	begin
-	    if(~clear)begin
+	    if(~rclear)begin
 	        rptr <= 0;
 	        dataOut <= 0;
 	    end
-		if(r_en & ~empty ) begin
+		else if(r_en & ~empty ) begin
 			dataOut <= dataRd[rptr];
 			rptr <= rptr + 1;
 		end

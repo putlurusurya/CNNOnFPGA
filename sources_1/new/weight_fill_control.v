@@ -31,11 +31,11 @@ module weight_fill_control#(
     input enable,								
     input reset,								
     input [dim_data_size-1:0] weight_size,								
-    input [dim_data_size-1:0] number_filters,								
+    input [dim_data_size-1:0] number_filters,																															
     output reg [data_size*array_size*array_size-1:0] weight_out,								
     output reg done								
     );								
-    								
+    integer offset;							
     reg [2:0] state;								
     reg [2:0] state1;								
     reg [2:0] state2;								
@@ -67,7 +67,8 @@ module weight_fill_control#(
             done<=0;								
             ncount<=0;								
             ecount<=0;								
-            temp_weights<=0;								
+            temp_weights<=0;
+            weight_out<=0;								
         end								
         
         else if(enable) begin								
@@ -75,7 +76,8 @@ module weight_fill_control#(
                 init:begin								
                         weight_out<=0;								
                         c_address<=initial_address+(number_filters-1)*weight_size*weight_size+weight_size*weight_size-1;								
-                        state<=iter;  								
+                        state<=iter; 
+                        offset<=array_size-weight_size*weight_size; 								
                     end								
                  iter:begin								
                         								
@@ -106,7 +108,7 @@ module weight_fill_control#(
                  end								
                  shift:begin								
                         if(ecount==weight_size*weight_size)begin								
-                          								
+                          	weight_out<=weight_out<<data_size*array_size*offset;					
                             state<=finish;								
                         end								
                         else begin								

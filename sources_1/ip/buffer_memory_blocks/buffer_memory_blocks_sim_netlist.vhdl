@@ -1,7 +1,7 @@
 -- Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2020.1 (win64) Build 2902540 Wed May 27 19:54:49 MDT 2020
--- Date        : Fri Feb 19 21:20:44 2021
+-- Date        : Mon Mar  1 21:49:52 2021
 -- Host        : LAPTOP-R5TEM1UP running 64-bit major release  (build 9200)
 -- Command     : write_vhdl -force -mode funcsim
 --               g:/CNNSONFPGA/Project/Project.srcs/sources_1/ip/buffer_memory_blocks/buffer_memory_blocks_sim_netlist.vhdl
@@ -17,7 +17,7 @@ use UNISIM.VCOMPONENTS.ALL;
 entity buffer_memory_blocks_bindec is
   port (
     ena_array : out STD_LOGIC_VECTOR ( 2 downto 0 );
-    ena : in STD_LOGIC;
+    wea : in STD_LOGIC_VECTOR ( 0 to 0 );
     addra : in STD_LOGIC_VECTOR ( 1 downto 0 )
   );
   attribute ORIG_REF_NAME : string;
@@ -31,7 +31,7 @@ begin
       INIT => X"02"
     )
         port map (
-      I0 => ena,
+      I0 => wea(0),
       I1 => addra(0),
       I2 => addra(1),
       O => ena_array(0)
@@ -43,7 +43,7 @@ begin
         port map (
       I0 => addra(1),
       I1 => addra(0),
-      I2 => ena,
+      I2 => wea(0),
       O => ena_array(1)
     );
 \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_i_1__1\: unisim.vcomponents.LUT3
@@ -52,7 +52,7 @@ begin
     )
         port map (
       I0 => addra(0),
-      I1 => ena,
+      I1 => wea(0),
       I2 => addra(1),
       O => ena_array(2)
     );
@@ -63,8 +63,7 @@ library UNISIM;
 use UNISIM.VCOMPONENTS.ALL;
 entity buffer_memory_blocks_bindec_0 is
   port (
-    enb_array : out STD_LOGIC_VECTOR ( 2 downto 0 );
-    enb : in STD_LOGIC;
+    enb_array : out STD_LOGIC_VECTOR ( 1 downto 0 );
     addrb : in STD_LOGIC_VECTOR ( 1 downto 0 )
   );
   attribute ORIG_REF_NAME : string;
@@ -73,35 +72,23 @@ end buffer_memory_blocks_bindec_0;
 
 architecture STRUCTURE of buffer_memory_blocks_bindec_0 is
 begin
-\DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_i_2\: unisim.vcomponents.LUT3
+\DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_i_2\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"02"
-    )
-        port map (
-      I0 => enb,
-      I1 => addrb(0),
-      I2 => addrb(1),
-      O => enb_array(0)
-    );
-\DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_i_2__0\: unisim.vcomponents.LUT3
-    generic map(
-      INIT => X"40"
+      INIT => X"1"
     )
         port map (
       I0 => addrb(1),
       I1 => addrb(0),
-      I2 => enb,
-      O => enb_array(1)
+      O => enb_array(0)
     );
-\DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_i_2__1\: unisim.vcomponents.LUT3
+\DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_i_2__0\: unisim.vcomponents.LUT2
     generic map(
-      INIT => X"40"
+      INIT => X"8"
     )
         port map (
-      I0 => addrb(0),
-      I1 => enb,
-      I2 => addrb(1),
-      O => enb_array(2)
+      I0 => addrb(1),
+      I1 => addrb(0),
+      O => enb_array(1)
     );
 end STRUCTURE;
 library IEEE;
@@ -111,7 +98,6 @@ use UNISIM.VCOMPONENTS.ALL;
 entity \buffer_memory_blocks_blk_mem_gen_mux__parameterized0\ is
   port (
     doutb : out STD_LOGIC_VECTOR ( 8 downto 0 );
-    enb : in STD_LOGIC;
     addrb : in STD_LOGIC_VECTOR ( 1 downto 0 );
     clkb : in STD_LOGIC;
     DOPBDOP : in STD_LOGIC_VECTOR ( 0 to 0 );
@@ -129,7 +115,6 @@ end \buffer_memory_blocks_blk_mem_gen_mux__parameterized0\;
 
 architecture STRUCTURE of \buffer_memory_blocks_blk_mem_gen_mux__parameterized0\ is
   signal sel_pipe : STD_LOGIC_VECTOR ( 1 downto 0 );
-  signal sel_pipe_d1 : STD_LOGIC_VECTOR ( 1 downto 0 );
 begin
 \doutb[10]_INST_0\: unisim.vcomponents.LUT6
     generic map(
@@ -139,8 +124,8 @@ begin
       I0 => DOBDO(3),
       I1 => \doutb[14]\(3),
       I2 => \doutb[14]_0\(3),
-      I3 => sel_pipe_d1(1),
-      I4 => sel_pipe_d1(0),
+      I3 => sel_pipe(1),
+      I4 => sel_pipe(0),
       I5 => \doutb[14]_1\(3),
       O => doutb(3)
     );
@@ -152,8 +137,8 @@ begin
       I0 => DOBDO(4),
       I1 => \doutb[14]\(4),
       I2 => \doutb[14]_0\(4),
-      I3 => sel_pipe_d1(1),
-      I4 => sel_pipe_d1(0),
+      I3 => sel_pipe(1),
+      I4 => sel_pipe(0),
       I5 => \doutb[14]_1\(4),
       O => doutb(4)
     );
@@ -165,8 +150,8 @@ begin
       I0 => DOBDO(5),
       I1 => \doutb[14]\(5),
       I2 => \doutb[14]_0\(5),
-      I3 => sel_pipe_d1(1),
-      I4 => sel_pipe_d1(0),
+      I3 => sel_pipe(1),
+      I4 => sel_pipe(0),
       I5 => \doutb[14]_1\(5),
       O => doutb(5)
     );
@@ -178,8 +163,8 @@ begin
       I0 => DOBDO(6),
       I1 => \doutb[14]\(6),
       I2 => \doutb[14]_0\(6),
-      I3 => sel_pipe_d1(1),
-      I4 => sel_pipe_d1(0),
+      I3 => sel_pipe(1),
+      I4 => sel_pipe(0),
       I5 => \doutb[14]_1\(6),
       O => doutb(6)
     );
@@ -191,8 +176,8 @@ begin
       I0 => DOBDO(7),
       I1 => \doutb[14]\(7),
       I2 => \doutb[14]_0\(7),
-      I3 => sel_pipe_d1(1),
-      I4 => sel_pipe_d1(0),
+      I3 => sel_pipe(1),
+      I4 => sel_pipe(0),
       I5 => \doutb[14]_1\(7),
       O => doutb(7)
     );
@@ -204,8 +189,8 @@ begin
       I0 => DOPBDOP(0),
       I1 => \doutb[15]\(0),
       I2 => \doutb[15]_0\(0),
-      I3 => sel_pipe_d1(1),
-      I4 => sel_pipe_d1(0),
+      I3 => sel_pipe(1),
+      I4 => sel_pipe(0),
       I5 => \doutb[15]_1\(0),
       O => doutb(8)
     );
@@ -217,8 +202,8 @@ begin
       I0 => DOBDO(0),
       I1 => \doutb[14]\(0),
       I2 => \doutb[14]_0\(0),
-      I3 => sel_pipe_d1(1),
-      I4 => sel_pipe_d1(0),
+      I3 => sel_pipe(1),
+      I4 => sel_pipe(0),
       I5 => \doutb[14]_1\(0),
       O => doutb(0)
     );
@@ -230,8 +215,8 @@ begin
       I0 => DOBDO(1),
       I1 => \doutb[14]\(1),
       I2 => \doutb[14]_0\(1),
-      I3 => sel_pipe_d1(1),
-      I4 => sel_pipe_d1(0),
+      I3 => sel_pipe(1),
+      I4 => sel_pipe(0),
       I5 => \doutb[14]_1\(1),
       O => doutb(1)
     );
@@ -243,32 +228,10 @@ begin
       I0 => DOBDO(2),
       I1 => \doutb[14]\(2),
       I2 => \doutb[14]_0\(2),
-      I3 => sel_pipe_d1(1),
-      I4 => sel_pipe_d1(0),
+      I3 => sel_pipe(1),
+      I4 => sel_pipe(0),
       I5 => \doutb[14]_1\(2),
       O => doutb(2)
-    );
-\no_softecc_norm_sel2.has_mem_regs.WITHOUT_ECC_PIPE.ce_pri.sel_pipe_d1_reg[0]\: unisim.vcomponents.FDRE
-    generic map(
-      INIT => '0'
-    )
-        port map (
-      C => clkb,
-      CE => enb,
-      D => sel_pipe(0),
-      Q => sel_pipe_d1(0),
-      R => '0'
-    );
-\no_softecc_norm_sel2.has_mem_regs.WITHOUT_ECC_PIPE.ce_pri.sel_pipe_d1_reg[1]\: unisim.vcomponents.FDRE
-    generic map(
-      INIT => '0'
-    )
-        port map (
-      C => clkb,
-      CE => enb,
-      D => sel_pipe(1),
-      Q => sel_pipe_d1(1),
-      R => '0'
     );
 \no_softecc_sel_reg.ce_pri.sel_pipe_reg[0]\: unisim.vcomponents.FDRE
     generic map(
@@ -276,7 +239,7 @@ begin
     )
         port map (
       C => clkb,
-      CE => enb,
+      CE => '1',
       D => addrb(0),
       Q => sel_pipe(0),
       R => '0'
@@ -287,7 +250,7 @@ begin
     )
         port map (
       C => clkb,
-      CE => enb,
+      CE => '1',
       D => addrb(1),
       Q => sel_pipe(1),
       R => '0'
@@ -302,12 +265,10 @@ entity buffer_memory_blocks_blk_mem_gen_prim_wrapper is
     doutb : out STD_LOGIC_VECTOR ( 0 to 0 );
     clka : in STD_LOGIC;
     clkb : in STD_LOGIC;
-    ena : in STD_LOGIC;
-    enb : in STD_LOGIC;
+    wea : in STD_LOGIC_VECTOR ( 0 to 0 );
     addra : in STD_LOGIC_VECTOR ( 13 downto 0 );
     addrb : in STD_LOGIC_VECTOR ( 13 downto 0 );
-    dina : in STD_LOGIC_VECTOR ( 0 to 0 );
-    wea : in STD_LOGIC_VECTOR ( 0 to 0 )
+    dina : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
   attribute ORIG_REF_NAME : string;
   attribute ORIG_REF_NAME of buffer_memory_blocks_blk_mem_gen_prim_wrapper : entity is "blk_mem_gen_prim_wrapper";
@@ -323,8 +284,8 @@ architecture STRUCTURE of buffer_memory_blocks_blk_mem_gen_prim_wrapper is
 begin
 \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM18.ram\: unisim.vcomponents.RAMB18E1
     generic map(
-      DOA_REG => 1,
-      DOB_REG => 1,
+      DOA_REG => 0,
+      DOB_REG => 0,
       INITP_00 => X"0000000000000000000000000000000000000000000000000000000000000000",
       INITP_01 => X"0000000000000000000000000000000000000000000000000000000000000000",
       INITP_02 => X"0000000000000000000000000000000000000000000000000000000000000000",
@@ -438,16 +399,15 @@ begin
       DOBDO(0) => doutb(0),
       DOPADOP(1 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM18.ram_DOPADOP_UNCONNECTED\(1 downto 0),
       DOPBDOP(1 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM18.ram_DOPBDOP_UNCONNECTED\(1 downto 0),
-      ENARDEN => ena,
-      ENBWREN => enb,
+      ENARDEN => wea(0),
+      ENBWREN => '1',
       REGCEAREGCE => '0',
-      REGCEB => enb,
+      REGCEB => '0',
       RSTRAMARSTRAM => '0',
       RSTRAMB => '0',
       RSTREGARSTREG => '0',
       RSTREGB => '0',
-      WEA(1) => wea(0),
-      WEA(0) => wea(0),
+      WEA(1 downto 0) => B"11",
       WEBWE(3 downto 0) => B"0000"
     );
 end STRUCTURE;
@@ -460,12 +420,10 @@ entity \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parameterized0\ is
     doutb : out STD_LOGIC_VECTOR ( 1 downto 0 );
     clka : in STD_LOGIC;
     clkb : in STD_LOGIC;
-    ena : in STD_LOGIC;
-    enb : in STD_LOGIC;
+    wea : in STD_LOGIC_VECTOR ( 0 to 0 );
     addra : in STD_LOGIC_VECTOR ( 13 downto 0 );
     addrb : in STD_LOGIC_VECTOR ( 13 downto 0 );
-    dina : in STD_LOGIC_VECTOR ( 1 downto 0 );
-    wea : in STD_LOGIC_VECTOR ( 0 to 0 )
+    dina : in STD_LOGIC_VECTOR ( 1 downto 0 )
   );
   attribute ORIG_REF_NAME : string;
   attribute ORIG_REF_NAME of \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parameterized0\ : entity is "blk_mem_gen_prim_wrapper";
@@ -487,8 +445,8 @@ architecture STRUCTURE of \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parame
 begin
 \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram\: unisim.vcomponents.RAMB36E1
     generic map(
-      DOA_REG => 1,
-      DOB_REG => 1,
+      DOA_REG => 0,
+      DOB_REG => 0,
       EN_ECC_READ => false,
       EN_ECC_WRITE => false,
       INITP_00 => X"0000000000000000000000000000000000000000000000000000000000000000",
@@ -688,22 +646,19 @@ begin
       DOPADOP(3 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_DOPADOP_UNCONNECTED\(3 downto 0),
       DOPBDOP(3 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_DOPBDOP_UNCONNECTED\(3 downto 0),
       ECCPARITY(7 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_ECCPARITY_UNCONNECTED\(7 downto 0),
-      ENARDEN => ena,
-      ENBWREN => enb,
+      ENARDEN => wea(0),
+      ENBWREN => '1',
       INJECTDBITERR => '0',
       INJECTSBITERR => '0',
       RDADDRECC(8 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_RDADDRECC_UNCONNECTED\(8 downto 0),
       REGCEAREGCE => '0',
-      REGCEB => enb,
+      REGCEB => '0',
       RSTRAMARSTRAM => '0',
       RSTRAMB => '0',
       RSTREGARSTREG => '0',
       RSTREGB => '0',
       SBITERR => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_SBITERR_UNCONNECTED\,
-      WEA(3) => wea(0),
-      WEA(2) => wea(0),
-      WEA(1) => wea(0),
-      WEA(0) => wea(0),
+      WEA(3 downto 0) => B"1111",
       WEBWE(7 downto 0) => B"00000000"
     );
 end STRUCTURE;
@@ -716,12 +671,10 @@ entity \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parameterized1\ is
     doutb : out STD_LOGIC_VECTOR ( 1 downto 0 );
     clka : in STD_LOGIC;
     clkb : in STD_LOGIC;
-    ena : in STD_LOGIC;
-    enb : in STD_LOGIC;
+    wea : in STD_LOGIC_VECTOR ( 0 to 0 );
     addra : in STD_LOGIC_VECTOR ( 13 downto 0 );
     addrb : in STD_LOGIC_VECTOR ( 13 downto 0 );
-    dina : in STD_LOGIC_VECTOR ( 1 downto 0 );
-    wea : in STD_LOGIC_VECTOR ( 0 to 0 )
+    dina : in STD_LOGIC_VECTOR ( 1 downto 0 )
   );
   attribute ORIG_REF_NAME : string;
   attribute ORIG_REF_NAME of \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parameterized1\ : entity is "blk_mem_gen_prim_wrapper";
@@ -743,8 +696,8 @@ architecture STRUCTURE of \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parame
 begin
 \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram\: unisim.vcomponents.RAMB36E1
     generic map(
-      DOA_REG => 1,
-      DOB_REG => 1,
+      DOA_REG => 0,
+      DOB_REG => 0,
       EN_ECC_READ => false,
       EN_ECC_WRITE => false,
       INITP_00 => X"0000000000000000000000000000000000000000000000000000000000000000",
@@ -944,22 +897,19 @@ begin
       DOPADOP(3 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_DOPADOP_UNCONNECTED\(3 downto 0),
       DOPBDOP(3 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_DOPBDOP_UNCONNECTED\(3 downto 0),
       ECCPARITY(7 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_ECCPARITY_UNCONNECTED\(7 downto 0),
-      ENARDEN => ena,
-      ENBWREN => enb,
+      ENARDEN => wea(0),
+      ENBWREN => '1',
       INJECTDBITERR => '0',
       INJECTSBITERR => '0',
       RDADDRECC(8 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_RDADDRECC_UNCONNECTED\(8 downto 0),
       REGCEAREGCE => '0',
-      REGCEB => enb,
+      REGCEB => '0',
       RSTRAMARSTRAM => '0',
       RSTRAMB => '0',
       RSTREGARSTREG => '0',
       RSTREGB => '0',
       SBITERR => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_SBITERR_UNCONNECTED\,
-      WEA(3) => wea(0),
-      WEA(2) => wea(0),
-      WEA(1) => wea(0),
-      WEA(0) => wea(0),
+      WEA(3 downto 0) => B"1111",
       WEBWE(7 downto 0) => B"00000000"
     );
 end STRUCTURE;
@@ -972,12 +922,10 @@ entity \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parameterized2\ is
     doutb : out STD_LOGIC_VECTOR ( 1 downto 0 );
     clka : in STD_LOGIC;
     clkb : in STD_LOGIC;
-    ena : in STD_LOGIC;
-    enb : in STD_LOGIC;
+    wea : in STD_LOGIC_VECTOR ( 0 to 0 );
     addra : in STD_LOGIC_VECTOR ( 13 downto 0 );
     addrb : in STD_LOGIC_VECTOR ( 13 downto 0 );
-    dina : in STD_LOGIC_VECTOR ( 1 downto 0 );
-    wea : in STD_LOGIC_VECTOR ( 0 to 0 )
+    dina : in STD_LOGIC_VECTOR ( 1 downto 0 )
   );
   attribute ORIG_REF_NAME : string;
   attribute ORIG_REF_NAME of \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parameterized2\ : entity is "blk_mem_gen_prim_wrapper";
@@ -999,8 +947,8 @@ architecture STRUCTURE of \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parame
 begin
 \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram\: unisim.vcomponents.RAMB36E1
     generic map(
-      DOA_REG => 1,
-      DOB_REG => 1,
+      DOA_REG => 0,
+      DOB_REG => 0,
       EN_ECC_READ => false,
       EN_ECC_WRITE => false,
       INITP_00 => X"0000000000000000000000000000000000000000000000000000000000000000",
@@ -1200,22 +1148,19 @@ begin
       DOPADOP(3 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_DOPADOP_UNCONNECTED\(3 downto 0),
       DOPBDOP(3 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_DOPBDOP_UNCONNECTED\(3 downto 0),
       ECCPARITY(7 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_ECCPARITY_UNCONNECTED\(7 downto 0),
-      ENARDEN => ena,
-      ENBWREN => enb,
+      ENARDEN => wea(0),
+      ENBWREN => '1',
       INJECTDBITERR => '0',
       INJECTSBITERR => '0',
       RDADDRECC(8 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_RDADDRECC_UNCONNECTED\(8 downto 0),
       REGCEAREGCE => '0',
-      REGCEB => enb,
+      REGCEB => '0',
       RSTRAMARSTRAM => '0',
       RSTRAMB => '0',
       RSTREGARSTREG => '0',
       RSTREGB => '0',
       SBITERR => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_SBITERR_UNCONNECTED\,
-      WEA(3) => wea(0),
-      WEA(2) => wea(0),
-      WEA(1) => wea(0),
-      WEA(0) => wea(0),
+      WEA(3 downto 0) => B"1111",
       WEBWE(7 downto 0) => B"00000000"
     );
 end STRUCTURE;
@@ -1231,11 +1176,9 @@ entity \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parameterized3\ is
     clkb : in STD_LOGIC;
     ena_array : in STD_LOGIC_VECTOR ( 0 to 0 );
     enb_array : in STD_LOGIC_VECTOR ( 0 to 0 );
-    enb : in STD_LOGIC;
     addra : in STD_LOGIC_VECTOR ( 11 downto 0 );
     addrb : in STD_LOGIC_VECTOR ( 11 downto 0 );
-    dina : in STD_LOGIC_VECTOR ( 8 downto 0 );
-    wea : in STD_LOGIC_VECTOR ( 0 to 0 )
+    dina : in STD_LOGIC_VECTOR ( 8 downto 0 )
   );
   attribute ORIG_REF_NAME : string;
   attribute ORIG_REF_NAME of \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parameterized3\ : entity is "blk_mem_gen_prim_wrapper";
@@ -1257,8 +1200,8 @@ architecture STRUCTURE of \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parame
 begin
 \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram\: unisim.vcomponents.RAMB36E1
     generic map(
-      DOA_REG => 1,
-      DOB_REG => 1,
+      DOA_REG => 0,
+      DOB_REG => 0,
       EN_ECC_READ => false,
       EN_ECC_WRITE => false,
       INITP_00 => X"0000000000000000000000000000000000000000000000000000000000000000",
@@ -1466,16 +1409,13 @@ begin
       INJECTSBITERR => '0',
       RDADDRECC(8 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_RDADDRECC_UNCONNECTED\(8 downto 0),
       REGCEAREGCE => '0',
-      REGCEB => enb,
+      REGCEB => '0',
       RSTRAMARSTRAM => '0',
       RSTRAMB => '0',
       RSTREGARSTREG => '0',
       RSTREGB => '0',
       SBITERR => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_SBITERR_UNCONNECTED\,
-      WEA(3) => wea(0),
-      WEA(2) => wea(0),
-      WEA(1) => wea(0),
-      WEA(0) => wea(0),
+      WEA(3 downto 0) => B"1111",
       WEBWE(7 downto 0) => B"00000000"
     );
 end STRUCTURE;
@@ -1490,18 +1430,16 @@ entity \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parameterized4\ is
     clka : in STD_LOGIC;
     clkb : in STD_LOGIC;
     ena_array : in STD_LOGIC_VECTOR ( 0 to 0 );
-    enb_array : in STD_LOGIC_VECTOR ( 0 to 0 );
-    enb : in STD_LOGIC;
     addra : in STD_LOGIC_VECTOR ( 11 downto 0 );
-    addrb : in STD_LOGIC_VECTOR ( 11 downto 0 );
-    dina : in STD_LOGIC_VECTOR ( 8 downto 0 );
-    wea : in STD_LOGIC_VECTOR ( 0 to 0 )
+    addrb : in STD_LOGIC_VECTOR ( 13 downto 0 );
+    dina : in STD_LOGIC_VECTOR ( 8 downto 0 )
   );
   attribute ORIG_REF_NAME : string;
   attribute ORIG_REF_NAME of \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parameterized4\ : entity is "blk_mem_gen_prim_wrapper";
 end \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parameterized4\;
 
 architecture STRUCTURE of \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parameterized4\ is
+  signal \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_i_2_n_0\ : STD_LOGIC;
   signal \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_CASCADEOUTA_UNCONNECTED\ : STD_LOGIC;
   signal \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_CASCADEOUTB_UNCONNECTED\ : STD_LOGIC;
   signal \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_DBITERR_UNCONNECTED\ : STD_LOGIC;
@@ -1517,8 +1455,8 @@ architecture STRUCTURE of \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parame
 begin
 \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram\: unisim.vcomponents.RAMB36E1
     generic map(
-      DOA_REG => 1,
-      DOB_REG => 1,
+      DOA_REG => 0,
+      DOB_REG => 0,
       EN_ECC_READ => false,
       EN_ECC_WRITE => false,
       INITP_00 => X"0000000000000000000000000000000000000000000000000000000000000000",
@@ -1721,22 +1659,28 @@ begin
       DOPBDOP(0) => \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_1\(0),
       ECCPARITY(7 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_ECCPARITY_UNCONNECTED\(7 downto 0),
       ENARDEN => ena_array(0),
-      ENBWREN => enb_array(0),
+      ENBWREN => \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_i_2_n_0\,
       INJECTDBITERR => '0',
       INJECTSBITERR => '0',
       RDADDRECC(8 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_RDADDRECC_UNCONNECTED\(8 downto 0),
       REGCEAREGCE => '0',
-      REGCEB => enb,
+      REGCEB => '0',
       RSTRAMARSTRAM => '0',
       RSTRAMB => '0',
       RSTREGARSTREG => '0',
       RSTREGB => '0',
       SBITERR => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_SBITERR_UNCONNECTED\,
-      WEA(3) => wea(0),
-      WEA(2) => wea(0),
-      WEA(1) => wea(0),
-      WEA(0) => wea(0),
+      WEA(3 downto 0) => B"1111",
       WEBWE(7 downto 0) => B"00000000"
+    );
+\DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_i_2\: unisim.vcomponents.LUT2
+    generic map(
+      INIT => X"2"
+    )
+        port map (
+      I0 => addrb(12),
+      I1 => addrb(13),
+      O => \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_i_2_n_0\
     );
 end STRUCTURE;
 library IEEE;
@@ -1750,18 +1694,16 @@ entity \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parameterized5\ is
     clka : in STD_LOGIC;
     clkb : in STD_LOGIC;
     ena_array : in STD_LOGIC_VECTOR ( 0 to 0 );
-    enb_array : in STD_LOGIC_VECTOR ( 0 to 0 );
-    enb : in STD_LOGIC;
     addra : in STD_LOGIC_VECTOR ( 11 downto 0 );
-    addrb : in STD_LOGIC_VECTOR ( 11 downto 0 );
-    dina : in STD_LOGIC_VECTOR ( 8 downto 0 );
-    wea : in STD_LOGIC_VECTOR ( 0 to 0 )
+    addrb : in STD_LOGIC_VECTOR ( 13 downto 0 );
+    dina : in STD_LOGIC_VECTOR ( 8 downto 0 )
   );
   attribute ORIG_REF_NAME : string;
   attribute ORIG_REF_NAME of \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parameterized5\ : entity is "blk_mem_gen_prim_wrapper";
 end \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parameterized5\;
 
 architecture STRUCTURE of \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parameterized5\ is
+  signal \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_i_2__0_n_0\ : STD_LOGIC;
   signal \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_CASCADEOUTA_UNCONNECTED\ : STD_LOGIC;
   signal \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_CASCADEOUTB_UNCONNECTED\ : STD_LOGIC;
   signal \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_DBITERR_UNCONNECTED\ : STD_LOGIC;
@@ -1777,8 +1719,8 @@ architecture STRUCTURE of \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parame
 begin
 \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram\: unisim.vcomponents.RAMB36E1
     generic map(
-      DOA_REG => 1,
-      DOB_REG => 1,
+      DOA_REG => 0,
+      DOB_REG => 0,
       EN_ECC_READ => false,
       EN_ECC_WRITE => false,
       INITP_00 => X"0000000000000000000000000000000000000000000000000000000000000000",
@@ -1981,22 +1923,28 @@ begin
       DOPBDOP(0) => DOPBDOP(0),
       ECCPARITY(7 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_ECCPARITY_UNCONNECTED\(7 downto 0),
       ENARDEN => ena_array(0),
-      ENBWREN => enb_array(0),
+      ENBWREN => \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_i_2__0_n_0\,
       INJECTDBITERR => '0',
       INJECTSBITERR => '0',
       RDADDRECC(8 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_RDADDRECC_UNCONNECTED\(8 downto 0),
       REGCEAREGCE => '0',
-      REGCEB => enb,
+      REGCEB => '0',
       RSTRAMARSTRAM => '0',
       RSTRAMB => '0',
       RSTREGARSTREG => '0',
       RSTREGB => '0',
       SBITERR => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_SBITERR_UNCONNECTED\,
-      WEA(3) => wea(0),
-      WEA(2) => wea(0),
-      WEA(1) => wea(0),
-      WEA(0) => wea(0),
+      WEA(3 downto 0) => B"1111",
       WEBWE(7 downto 0) => B"00000000"
+    );
+\DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_i_2__0\: unisim.vcomponents.LUT2
+    generic map(
+      INIT => X"2"
+    )
+        port map (
+      I0 => addrb(13),
+      I1 => addrb(12),
+      O => \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_i_2__0_n_0\
     );
 end STRUCTURE;
 library IEEE;
@@ -2009,12 +1957,11 @@ entity \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parameterized6\ is
     \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_1\ : out STD_LOGIC_VECTOR ( 0 to 0 );
     clka : in STD_LOGIC;
     clkb : in STD_LOGIC;
-    enb : in STD_LOGIC;
+    enb_array : in STD_LOGIC_VECTOR ( 0 to 0 );
     addra : in STD_LOGIC_VECTOR ( 13 downto 0 );
-    addrb : in STD_LOGIC_VECTOR ( 13 downto 0 );
+    addrb : in STD_LOGIC_VECTOR ( 11 downto 0 );
     dina : in STD_LOGIC_VECTOR ( 8 downto 0 );
-    wea : in STD_LOGIC_VECTOR ( 0 to 0 );
-    ena : in STD_LOGIC
+    wea : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
   attribute ORIG_REF_NAME : string;
   attribute ORIG_REF_NAME of \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parameterized6\ : entity is "blk_mem_gen_prim_wrapper";
@@ -2022,7 +1969,6 @@ end \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parameterized6\;
 
 architecture STRUCTURE of \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parameterized6\ is
   signal \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_i_1_n_0\ : STD_LOGIC;
-  signal \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_i_2_n_0\ : STD_LOGIC;
   signal \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_CASCADEOUTA_UNCONNECTED\ : STD_LOGIC;
   signal \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_CASCADEOUTB_UNCONNECTED\ : STD_LOGIC;
   signal \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_DBITERR_UNCONNECTED\ : STD_LOGIC;
@@ -2038,8 +1984,8 @@ architecture STRUCTURE of \buffer_memory_blocks_blk_mem_gen_prim_wrapper__parame
 begin
 \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram\: unisim.vcomponents.RAMB36E1
     generic map(
-      DOA_REG => 1,
-      DOB_REG => 1,
+      DOA_REG => 0,
+      DOB_REG => 0,
       EN_ECC_READ => false,
       EN_ECC_WRITE => false,
       INITP_00 => X"0000000000000000000000000000000000000000000000000000000000000000",
@@ -2242,21 +2188,18 @@ begin
       DOPBDOP(0) => \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_1\(0),
       ECCPARITY(7 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_ECCPARITY_UNCONNECTED\(7 downto 0),
       ENARDEN => \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_i_1_n_0\,
-      ENBWREN => \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_i_2_n_0\,
+      ENBWREN => enb_array(0),
       INJECTDBITERR => '0',
       INJECTSBITERR => '0',
       RDADDRECC(8 downto 0) => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_RDADDRECC_UNCONNECTED\(8 downto 0),
       REGCEAREGCE => '0',
-      REGCEB => enb,
+      REGCEB => '0',
       RSTRAMARSTRAM => '0',
       RSTRAMB => '0',
       RSTREGARSTREG => '0',
       RSTREGB => '0',
       SBITERR => \NLW_DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_SBITERR_UNCONNECTED\,
-      WEA(3) => wea(0),
-      WEA(2) => wea(0),
-      WEA(1) => wea(0),
-      WEA(0) => wea(0),
+      WEA(3 downto 0) => B"1111",
       WEBWE(7 downto 0) => B"00000000"
     );
 \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_i_1\: unisim.vcomponents.LUT3
@@ -2266,18 +2209,8 @@ begin
         port map (
       I0 => addra(13),
       I1 => addra(12),
-      I2 => ena,
+      I2 => wea(0),
       O => \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_i_1_n_0\
-    );
-\DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_i_2\: unisim.vcomponents.LUT3
-    generic map(
-      INIT => X"80"
-    )
-        port map (
-      I0 => addrb(13),
-      I1 => addrb(12),
-      I2 => enb,
-      O => \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_i_2_n_0\
     );
 end STRUCTURE;
 library IEEE;
@@ -2289,12 +2222,10 @@ entity buffer_memory_blocks_blk_mem_gen_prim_width is
     doutb : out STD_LOGIC_VECTOR ( 0 to 0 );
     clka : in STD_LOGIC;
     clkb : in STD_LOGIC;
-    ena : in STD_LOGIC;
-    enb : in STD_LOGIC;
+    wea : in STD_LOGIC_VECTOR ( 0 to 0 );
     addra : in STD_LOGIC_VECTOR ( 13 downto 0 );
     addrb : in STD_LOGIC_VECTOR ( 13 downto 0 );
-    dina : in STD_LOGIC_VECTOR ( 0 to 0 );
-    wea : in STD_LOGIC_VECTOR ( 0 to 0 )
+    dina : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
   attribute ORIG_REF_NAME : string;
   attribute ORIG_REF_NAME of buffer_memory_blocks_blk_mem_gen_prim_width : entity is "blk_mem_gen_prim_width";
@@ -2310,8 +2241,6 @@ begin
       clkb => clkb,
       dina(0) => dina(0),
       doutb(0) => doutb(0),
-      ena => ena,
-      enb => enb,
       wea(0) => wea(0)
     );
 end STRUCTURE;
@@ -2324,12 +2253,10 @@ entity \buffer_memory_blocks_blk_mem_gen_prim_width__parameterized0\ is
     doutb : out STD_LOGIC_VECTOR ( 1 downto 0 );
     clka : in STD_LOGIC;
     clkb : in STD_LOGIC;
-    ena : in STD_LOGIC;
-    enb : in STD_LOGIC;
+    wea : in STD_LOGIC_VECTOR ( 0 to 0 );
     addra : in STD_LOGIC_VECTOR ( 13 downto 0 );
     addrb : in STD_LOGIC_VECTOR ( 13 downto 0 );
-    dina : in STD_LOGIC_VECTOR ( 1 downto 0 );
-    wea : in STD_LOGIC_VECTOR ( 0 to 0 )
+    dina : in STD_LOGIC_VECTOR ( 1 downto 0 )
   );
   attribute ORIG_REF_NAME : string;
   attribute ORIG_REF_NAME of \buffer_memory_blocks_blk_mem_gen_prim_width__parameterized0\ : entity is "blk_mem_gen_prim_width";
@@ -2345,8 +2272,6 @@ begin
       clkb => clkb,
       dina(1 downto 0) => dina(1 downto 0),
       doutb(1 downto 0) => doutb(1 downto 0),
-      ena => ena,
-      enb => enb,
       wea(0) => wea(0)
     );
 end STRUCTURE;
@@ -2359,12 +2284,10 @@ entity \buffer_memory_blocks_blk_mem_gen_prim_width__parameterized1\ is
     doutb : out STD_LOGIC_VECTOR ( 1 downto 0 );
     clka : in STD_LOGIC;
     clkb : in STD_LOGIC;
-    ena : in STD_LOGIC;
-    enb : in STD_LOGIC;
+    wea : in STD_LOGIC_VECTOR ( 0 to 0 );
     addra : in STD_LOGIC_VECTOR ( 13 downto 0 );
     addrb : in STD_LOGIC_VECTOR ( 13 downto 0 );
-    dina : in STD_LOGIC_VECTOR ( 1 downto 0 );
-    wea : in STD_LOGIC_VECTOR ( 0 to 0 )
+    dina : in STD_LOGIC_VECTOR ( 1 downto 0 )
   );
   attribute ORIG_REF_NAME : string;
   attribute ORIG_REF_NAME of \buffer_memory_blocks_blk_mem_gen_prim_width__parameterized1\ : entity is "blk_mem_gen_prim_width";
@@ -2380,8 +2303,6 @@ begin
       clkb => clkb,
       dina(1 downto 0) => dina(1 downto 0),
       doutb(1 downto 0) => doutb(1 downto 0),
-      ena => ena,
-      enb => enb,
       wea(0) => wea(0)
     );
 end STRUCTURE;
@@ -2394,12 +2315,10 @@ entity \buffer_memory_blocks_blk_mem_gen_prim_width__parameterized2\ is
     doutb : out STD_LOGIC_VECTOR ( 1 downto 0 );
     clka : in STD_LOGIC;
     clkb : in STD_LOGIC;
-    ena : in STD_LOGIC;
-    enb : in STD_LOGIC;
+    wea : in STD_LOGIC_VECTOR ( 0 to 0 );
     addra : in STD_LOGIC_VECTOR ( 13 downto 0 );
     addrb : in STD_LOGIC_VECTOR ( 13 downto 0 );
-    dina : in STD_LOGIC_VECTOR ( 1 downto 0 );
-    wea : in STD_LOGIC_VECTOR ( 0 to 0 )
+    dina : in STD_LOGIC_VECTOR ( 1 downto 0 )
   );
   attribute ORIG_REF_NAME : string;
   attribute ORIG_REF_NAME of \buffer_memory_blocks_blk_mem_gen_prim_width__parameterized2\ : entity is "blk_mem_gen_prim_width";
@@ -2415,8 +2334,6 @@ begin
       clkb => clkb,
       dina(1 downto 0) => dina(1 downto 0),
       doutb(1 downto 0) => doutb(1 downto 0),
-      ena => ena,
-      enb => enb,
       wea(0) => wea(0)
     );
 end STRUCTURE;
@@ -2432,11 +2349,9 @@ entity \buffer_memory_blocks_blk_mem_gen_prim_width__parameterized3\ is
     clkb : in STD_LOGIC;
     ena_array : in STD_LOGIC_VECTOR ( 0 to 0 );
     enb_array : in STD_LOGIC_VECTOR ( 0 to 0 );
-    enb : in STD_LOGIC;
     addra : in STD_LOGIC_VECTOR ( 11 downto 0 );
     addrb : in STD_LOGIC_VECTOR ( 11 downto 0 );
-    dina : in STD_LOGIC_VECTOR ( 8 downto 0 );
-    wea : in STD_LOGIC_VECTOR ( 0 to 0 )
+    dina : in STD_LOGIC_VECTOR ( 8 downto 0 )
   );
   attribute ORIG_REF_NAME : string;
   attribute ORIG_REF_NAME of \buffer_memory_blocks_blk_mem_gen_prim_width__parameterized3\ : entity is "blk_mem_gen_prim_width";
@@ -2454,9 +2369,7 @@ begin
       clkb => clkb,
       dina(8 downto 0) => dina(8 downto 0),
       ena_array(0) => ena_array(0),
-      enb => enb,
-      enb_array(0) => enb_array(0),
-      wea(0) => wea(0)
+      enb_array(0) => enb_array(0)
     );
 end STRUCTURE;
 library IEEE;
@@ -2470,12 +2383,9 @@ entity \buffer_memory_blocks_blk_mem_gen_prim_width__parameterized4\ is
     clka : in STD_LOGIC;
     clkb : in STD_LOGIC;
     ena_array : in STD_LOGIC_VECTOR ( 0 to 0 );
-    enb_array : in STD_LOGIC_VECTOR ( 0 to 0 );
-    enb : in STD_LOGIC;
     addra : in STD_LOGIC_VECTOR ( 11 downto 0 );
-    addrb : in STD_LOGIC_VECTOR ( 11 downto 0 );
-    dina : in STD_LOGIC_VECTOR ( 8 downto 0 );
-    wea : in STD_LOGIC_VECTOR ( 0 to 0 )
+    addrb : in STD_LOGIC_VECTOR ( 13 downto 0 );
+    dina : in STD_LOGIC_VECTOR ( 8 downto 0 )
   );
   attribute ORIG_REF_NAME : string;
   attribute ORIG_REF_NAME of \buffer_memory_blocks_blk_mem_gen_prim_width__parameterized4\ : entity is "blk_mem_gen_prim_width";
@@ -2488,14 +2398,11 @@ begin
       \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_0\(7 downto 0) => \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram\(7 downto 0),
       \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_1\(0) => \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_0\(0),
       addra(11 downto 0) => addra(11 downto 0),
-      addrb(11 downto 0) => addrb(11 downto 0),
+      addrb(13 downto 0) => addrb(13 downto 0),
       clka => clka,
       clkb => clkb,
       dina(8 downto 0) => dina(8 downto 0),
-      ena_array(0) => ena_array(0),
-      enb => enb,
-      enb_array(0) => enb_array(0),
-      wea(0) => wea(0)
+      ena_array(0) => ena_array(0)
     );
 end STRUCTURE;
 library IEEE;
@@ -2509,12 +2416,9 @@ entity \buffer_memory_blocks_blk_mem_gen_prim_width__parameterized5\ is
     clka : in STD_LOGIC;
     clkb : in STD_LOGIC;
     ena_array : in STD_LOGIC_VECTOR ( 0 to 0 );
-    enb_array : in STD_LOGIC_VECTOR ( 0 to 0 );
-    enb : in STD_LOGIC;
     addra : in STD_LOGIC_VECTOR ( 11 downto 0 );
-    addrb : in STD_LOGIC_VECTOR ( 11 downto 0 );
-    dina : in STD_LOGIC_VECTOR ( 8 downto 0 );
-    wea : in STD_LOGIC_VECTOR ( 0 to 0 )
+    addrb : in STD_LOGIC_VECTOR ( 13 downto 0 );
+    dina : in STD_LOGIC_VECTOR ( 8 downto 0 )
   );
   attribute ORIG_REF_NAME : string;
   attribute ORIG_REF_NAME of \buffer_memory_blocks_blk_mem_gen_prim_width__parameterized5\ : entity is "blk_mem_gen_prim_width";
@@ -2527,14 +2431,11 @@ begin
       DOBDO(7 downto 0) => DOBDO(7 downto 0),
       DOPBDOP(0) => DOPBDOP(0),
       addra(11 downto 0) => addra(11 downto 0),
-      addrb(11 downto 0) => addrb(11 downto 0),
+      addrb(13 downto 0) => addrb(13 downto 0),
       clka => clka,
       clkb => clkb,
       dina(8 downto 0) => dina(8 downto 0),
-      ena_array(0) => ena_array(0),
-      enb => enb,
-      enb_array(0) => enb_array(0),
-      wea(0) => wea(0)
+      ena_array(0) => ena_array(0)
     );
 end STRUCTURE;
 library IEEE;
@@ -2547,12 +2448,11 @@ entity \buffer_memory_blocks_blk_mem_gen_prim_width__parameterized6\ is
     \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_0\ : out STD_LOGIC_VECTOR ( 0 to 0 );
     clka : in STD_LOGIC;
     clkb : in STD_LOGIC;
-    enb : in STD_LOGIC;
+    enb_array : in STD_LOGIC_VECTOR ( 0 to 0 );
     addra : in STD_LOGIC_VECTOR ( 13 downto 0 );
-    addrb : in STD_LOGIC_VECTOR ( 13 downto 0 );
+    addrb : in STD_LOGIC_VECTOR ( 11 downto 0 );
     dina : in STD_LOGIC_VECTOR ( 8 downto 0 );
-    wea : in STD_LOGIC_VECTOR ( 0 to 0 );
-    ena : in STD_LOGIC
+    wea : in STD_LOGIC_VECTOR ( 0 to 0 )
   );
   attribute ORIG_REF_NAME : string;
   attribute ORIG_REF_NAME of \buffer_memory_blocks_blk_mem_gen_prim_width__parameterized6\ : entity is "blk_mem_gen_prim_width";
@@ -2565,12 +2465,11 @@ begin
       \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_0\(7 downto 0) => \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram\(7 downto 0),
       \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_1\(0) => \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_0\(0),
       addra(13 downto 0) => addra(13 downto 0),
-      addrb(13 downto 0) => addrb(13 downto 0),
+      addrb(11 downto 0) => addrb(11 downto 0),
       clka => clka,
       clkb => clkb,
       dina(8 downto 0) => dina(8 downto 0),
-      ena => ena,
-      enb => enb,
+      enb_array(0) => enb_array(0),
       wea(0) => wea(0)
     );
 end STRUCTURE;
@@ -2582,13 +2481,11 @@ entity buffer_memory_blocks_blk_mem_gen_generic_cstr is
   port (
     doutb : out STD_LOGIC_VECTOR ( 15 downto 0 );
     addra : in STD_LOGIC_VECTOR ( 13 downto 0 );
-    ena : in STD_LOGIC;
+    wea : in STD_LOGIC_VECTOR ( 0 to 0 );
     addrb : in STD_LOGIC_VECTOR ( 13 downto 0 );
-    enb : in STD_LOGIC;
     clka : in STD_LOGIC;
     clkb : in STD_LOGIC;
-    dina : in STD_LOGIC_VECTOR ( 15 downto 0 );
-    wea : in STD_LOGIC_VECTOR ( 0 to 0 )
+    dina : in STD_LOGIC_VECTOR ( 15 downto 0 )
   );
   attribute ORIG_REF_NAME : string;
   attribute ORIG_REF_NAME of buffer_memory_blocks_blk_mem_gen_generic_cstr : entity is "blk_mem_gen_generic_cstr";
@@ -2596,7 +2493,7 @@ end buffer_memory_blocks_blk_mem_gen_generic_cstr;
 
 architecture STRUCTURE of buffer_memory_blocks_blk_mem_gen_generic_cstr is
   signal ena_array : STD_LOGIC_VECTOR ( 2 downto 0 );
-  signal enb_array : STD_LOGIC_VECTOR ( 2 downto 0 );
+  signal enb_array : STD_LOGIC_VECTOR ( 3 downto 0 );
   signal \ramloop[4].ram.r_n_0\ : STD_LOGIC;
   signal \ramloop[4].ram.r_n_1\ : STD_LOGIC;
   signal \ramloop[4].ram.r_n_2\ : STD_LOGIC;
@@ -2637,14 +2534,14 @@ begin
 \bindec_a.bindec_inst_a\: entity work.buffer_memory_blocks_bindec
      port map (
       addra(1 downto 0) => addra(13 downto 12),
-      ena => ena,
-      ena_array(2 downto 0) => ena_array(2 downto 0)
+      ena_array(2 downto 0) => ena_array(2 downto 0),
+      wea(0) => wea(0)
     );
 \bindec_b.bindec_inst_b\: entity work.buffer_memory_blocks_bindec_0
      port map (
       addrb(1 downto 0) => addrb(13 downto 12),
-      enb => enb,
-      enb_array(2 downto 0) => enb_array(2 downto 0)
+      enb_array(1) => enb_array(3),
+      enb_array(0) => enb_array(0)
     );
 \has_mux_b.B\: entity work.\buffer_memory_blocks_blk_mem_gen_mux__parameterized0\
      port map (
@@ -2686,8 +2583,7 @@ begin
       \doutb[14]_1\(0) => \ramloop[5].ram.r_n_7\,
       \doutb[15]\(0) => \ramloop[7].ram.r_n_8\,
       \doutb[15]_0\(0) => \ramloop[4].ram.r_n_8\,
-      \doutb[15]_1\(0) => \ramloop[5].ram.r_n_8\,
-      enb => enb
+      \doutb[15]_1\(0) => \ramloop[5].ram.r_n_8\
     );
 \ramloop[0].ram.r\: entity work.buffer_memory_blocks_blk_mem_gen_prim_width
      port map (
@@ -2697,8 +2593,6 @@ begin
       clkb => clkb,
       dina(0) => dina(0),
       doutb(0) => doutb(0),
-      ena => ena,
-      enb => enb,
       wea(0) => wea(0)
     );
 \ramloop[1].ram.r\: entity work.\buffer_memory_blocks_blk_mem_gen_prim_width__parameterized0\
@@ -2709,8 +2603,6 @@ begin
       clkb => clkb,
       dina(1 downto 0) => dina(2 downto 1),
       doutb(1 downto 0) => doutb(2 downto 1),
-      ena => ena,
-      enb => enb,
       wea(0) => wea(0)
     );
 \ramloop[2].ram.r\: entity work.\buffer_memory_blocks_blk_mem_gen_prim_width__parameterized1\
@@ -2721,8 +2613,6 @@ begin
       clkb => clkb,
       dina(1 downto 0) => dina(4 downto 3),
       doutb(1 downto 0) => doutb(4 downto 3),
-      ena => ena,
-      enb => enb,
       wea(0) => wea(0)
     );
 \ramloop[3].ram.r\: entity work.\buffer_memory_blocks_blk_mem_gen_prim_width__parameterized2\
@@ -2733,8 +2623,6 @@ begin
       clkb => clkb,
       dina(1 downto 0) => dina(6 downto 5),
       doutb(1 downto 0) => doutb(6 downto 5),
-      ena => ena,
-      enb => enb,
       wea(0) => wea(0)
     );
 \ramloop[4].ram.r\: entity work.\buffer_memory_blocks_blk_mem_gen_prim_width__parameterized3\
@@ -2754,9 +2642,7 @@ begin
       clkb => clkb,
       dina(8 downto 0) => dina(15 downto 7),
       ena_array(0) => ena_array(0),
-      enb => enb,
-      enb_array(0) => enb_array(0),
-      wea(0) => wea(0)
+      enb_array(0) => enb_array(0)
     );
 \ramloop[5].ram.r\: entity work.\buffer_memory_blocks_blk_mem_gen_prim_width__parameterized4\
      port map (
@@ -2770,14 +2656,11 @@ begin
       \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram\(0) => \ramloop[5].ram.r_n_7\,
       \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_0\(0) => \ramloop[5].ram.r_n_8\,
       addra(11 downto 0) => addra(11 downto 0),
-      addrb(11 downto 0) => addrb(11 downto 0),
+      addrb(13 downto 0) => addrb(13 downto 0),
       clka => clka,
       clkb => clkb,
       dina(8 downto 0) => dina(15 downto 7),
-      ena_array(0) => ena_array(1),
-      enb => enb,
-      enb_array(0) => enb_array(1),
-      wea(0) => wea(0)
+      ena_array(0) => ena_array(1)
     );
 \ramloop[6].ram.r\: entity work.\buffer_memory_blocks_blk_mem_gen_prim_width__parameterized5\
      port map (
@@ -2791,14 +2674,11 @@ begin
       DOBDO(0) => \ramloop[6].ram.r_n_7\,
       DOPBDOP(0) => \ramloop[6].ram.r_n_8\,
       addra(11 downto 0) => addra(11 downto 0),
-      addrb(11 downto 0) => addrb(11 downto 0),
+      addrb(13 downto 0) => addrb(13 downto 0),
       clka => clka,
       clkb => clkb,
       dina(8 downto 0) => dina(15 downto 7),
-      ena_array(0) => ena_array(2),
-      enb => enb,
-      enb_array(0) => enb_array(2),
-      wea(0) => wea(0)
+      ena_array(0) => ena_array(2)
     );
 \ramloop[7].ram.r\: entity work.\buffer_memory_blocks_blk_mem_gen_prim_width__parameterized6\
      port map (
@@ -2812,12 +2692,11 @@ begin
       \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram\(0) => \ramloop[7].ram.r_n_7\,
       \DEVICE_7SERIES.NO_BMM_INFO.SDP.SIMPLE_PRIM36.ram_0\(0) => \ramloop[7].ram.r_n_8\,
       addra(13 downto 0) => addra(13 downto 0),
-      addrb(13 downto 0) => addrb(13 downto 0),
+      addrb(11 downto 0) => addrb(11 downto 0),
       clka => clka,
       clkb => clkb,
       dina(8 downto 0) => dina(15 downto 7),
-      ena => ena,
-      enb => enb,
+      enb_array(0) => enb_array(3),
       wea(0) => wea(0)
     );
 end STRUCTURE;
@@ -2829,13 +2708,11 @@ entity buffer_memory_blocks_blk_mem_gen_top is
   port (
     doutb : out STD_LOGIC_VECTOR ( 15 downto 0 );
     addra : in STD_LOGIC_VECTOR ( 13 downto 0 );
-    ena : in STD_LOGIC;
+    wea : in STD_LOGIC_VECTOR ( 0 to 0 );
     addrb : in STD_LOGIC_VECTOR ( 13 downto 0 );
-    enb : in STD_LOGIC;
     clka : in STD_LOGIC;
     clkb : in STD_LOGIC;
-    dina : in STD_LOGIC_VECTOR ( 15 downto 0 );
-    wea : in STD_LOGIC_VECTOR ( 0 to 0 )
+    dina : in STD_LOGIC_VECTOR ( 15 downto 0 )
   );
   attribute ORIG_REF_NAME : string;
   attribute ORIG_REF_NAME of buffer_memory_blocks_blk_mem_gen_top : entity is "blk_mem_gen_top";
@@ -2851,8 +2728,6 @@ begin
       clkb => clkb,
       dina(15 downto 0) => dina(15 downto 0),
       doutb(15 downto 0) => doutb(15 downto 0),
-      ena => ena,
-      enb => enb,
       wea(0) => wea(0)
     );
 end STRUCTURE;
@@ -2864,13 +2739,11 @@ entity buffer_memory_blocks_blk_mem_gen_v8_4_4_synth is
   port (
     doutb : out STD_LOGIC_VECTOR ( 15 downto 0 );
     addra : in STD_LOGIC_VECTOR ( 13 downto 0 );
-    ena : in STD_LOGIC;
+    wea : in STD_LOGIC_VECTOR ( 0 to 0 );
     addrb : in STD_LOGIC_VECTOR ( 13 downto 0 );
-    enb : in STD_LOGIC;
     clka : in STD_LOGIC;
     clkb : in STD_LOGIC;
-    dina : in STD_LOGIC_VECTOR ( 15 downto 0 );
-    wea : in STD_LOGIC_VECTOR ( 0 to 0 )
+    dina : in STD_LOGIC_VECTOR ( 15 downto 0 )
   );
   attribute ORIG_REF_NAME : string;
   attribute ORIG_REF_NAME of buffer_memory_blocks_blk_mem_gen_v8_4_4_synth : entity is "blk_mem_gen_v8_4_4_synth";
@@ -2886,8 +2759,6 @@ begin
       clkb => clkb,
       dina(15 downto 0) => dina(15 downto 0),
       doutb(15 downto 0) => doutb(15 downto 0),
-      ena => ena,
-      enb => enb,
       wea(0) => wea(0)
     );
 end STRUCTURE;
@@ -3014,15 +2885,15 @@ entity buffer_memory_blocks_blk_mem_gen_v8_4_4 is
   attribute C_HAS_AXI_ID : integer;
   attribute C_HAS_AXI_ID of buffer_memory_blocks_blk_mem_gen_v8_4_4 : entity is 0;
   attribute C_HAS_ENA : integer;
-  attribute C_HAS_ENA of buffer_memory_blocks_blk_mem_gen_v8_4_4 : entity is 1;
+  attribute C_HAS_ENA of buffer_memory_blocks_blk_mem_gen_v8_4_4 : entity is 0;
   attribute C_HAS_ENB : integer;
-  attribute C_HAS_ENB of buffer_memory_blocks_blk_mem_gen_v8_4_4 : entity is 1;
+  attribute C_HAS_ENB of buffer_memory_blocks_blk_mem_gen_v8_4_4 : entity is 0;
   attribute C_HAS_INJECTERR : integer;
   attribute C_HAS_INJECTERR of buffer_memory_blocks_blk_mem_gen_v8_4_4 : entity is 0;
   attribute C_HAS_MEM_OUTPUT_REGS_A : integer;
   attribute C_HAS_MEM_OUTPUT_REGS_A of buffer_memory_blocks_blk_mem_gen_v8_4_4 : entity is 0;
   attribute C_HAS_MEM_OUTPUT_REGS_B : integer;
-  attribute C_HAS_MEM_OUTPUT_REGS_B of buffer_memory_blocks_blk_mem_gen_v8_4_4 : entity is 1;
+  attribute C_HAS_MEM_OUTPUT_REGS_B of buffer_memory_blocks_blk_mem_gen_v8_4_4 : entity is 0;
   attribute C_HAS_MUX_OUTPUT_REGS_A : integer;
   attribute C_HAS_MUX_OUTPUT_REGS_A of buffer_memory_blocks_blk_mem_gen_v8_4_4 : entity is 0;
   attribute C_HAS_MUX_OUTPUT_REGS_B : integer;
@@ -3216,8 +3087,6 @@ inst_blk_mem_gen: entity work.buffer_memory_blocks_blk_mem_gen_v8_4_4_synth
       clkb => clkb,
       dina(15 downto 0) => dina(15 downto 0),
       doutb(15 downto 0) => doutb(15 downto 0),
-      ena => ena,
-      enb => enb,
       wea(0) => wea(0)
     );
 end STRUCTURE;
@@ -3228,12 +3097,10 @@ use UNISIM.VCOMPONENTS.ALL;
 entity buffer_memory_blocks is
   port (
     clka : in STD_LOGIC;
-    ena : in STD_LOGIC;
     wea : in STD_LOGIC_VECTOR ( 0 to 0 );
     addra : in STD_LOGIC_VECTOR ( 13 downto 0 );
     dina : in STD_LOGIC_VECTOR ( 15 downto 0 );
     clkb : in STD_LOGIC;
-    enb : in STD_LOGIC;
     addrb : in STD_LOGIC_VECTOR ( 13 downto 0 );
     doutb : out STD_LOGIC_VECTOR ( 15 downto 0 )
   );
@@ -3321,15 +3188,15 @@ architecture STRUCTURE of buffer_memory_blocks is
   attribute C_HAS_AXI_ID : integer;
   attribute C_HAS_AXI_ID of U0 : label is 0;
   attribute C_HAS_ENA : integer;
-  attribute C_HAS_ENA of U0 : label is 1;
+  attribute C_HAS_ENA of U0 : label is 0;
   attribute C_HAS_ENB : integer;
-  attribute C_HAS_ENB of U0 : label is 1;
+  attribute C_HAS_ENB of U0 : label is 0;
   attribute C_HAS_INJECTERR : integer;
   attribute C_HAS_INJECTERR of U0 : label is 0;
   attribute C_HAS_MEM_OUTPUT_REGS_A : integer;
   attribute C_HAS_MEM_OUTPUT_REGS_A of U0 : label is 0;
   attribute C_HAS_MEM_OUTPUT_REGS_B : integer;
-  attribute C_HAS_MEM_OUTPUT_REGS_B of U0 : label is 1;
+  attribute C_HAS_MEM_OUTPUT_REGS_B of U0 : label is 0;
   attribute C_HAS_MUX_OUTPUT_REGS_A : integer;
   attribute C_HAS_MUX_OUTPUT_REGS_A of U0 : label is 0;
   attribute C_HAS_MUX_OUTPUT_REGS_B : integer;
@@ -3427,8 +3294,6 @@ architecture STRUCTURE of buffer_memory_blocks is
   attribute x_interface_parameter of clka : signal is "XIL_INTERFACENAME BRAM_PORTA, MEM_SIZE 8192, MEM_WIDTH 32, MEM_ECC NONE, MASTER_TYPE OTHER, READ_LATENCY 1";
   attribute x_interface_info of clkb : signal is "xilinx.com:interface:bram:1.0 BRAM_PORTB CLK";
   attribute x_interface_parameter of clkb : signal is "XIL_INTERFACENAME BRAM_PORTB, MEM_SIZE 8192, MEM_WIDTH 32, MEM_ECC NONE, MASTER_TYPE OTHER, READ_LATENCY 1";
-  attribute x_interface_info of ena : signal is "xilinx.com:interface:bram:1.0 BRAM_PORTA EN";
-  attribute x_interface_info of enb : signal is "xilinx.com:interface:bram:1.0 BRAM_PORTB EN";
   attribute x_interface_info of addra : signal is "xilinx.com:interface:bram:1.0 BRAM_PORTA ADDR";
   attribute x_interface_info of addrb : signal is "xilinx.com:interface:bram:1.0 BRAM_PORTB ADDR";
   attribute x_interface_info of dina : signal is "xilinx.com:interface:bram:1.0 BRAM_PORTA DIN";
@@ -3448,8 +3313,8 @@ U0: entity work.buffer_memory_blocks_blk_mem_gen_v8_4_4
       douta(15 downto 0) => NLW_U0_douta_UNCONNECTED(15 downto 0),
       doutb(15 downto 0) => doutb(15 downto 0),
       eccpipece => '0',
-      ena => ena,
-      enb => enb,
+      ena => '0',
+      enb => '0',
       injectdbiterr => '0',
       injectsbiterr => '0',
       rdaddrecc(13 downto 0) => NLW_U0_rdaddrecc_UNCONNECTED(13 downto 0),

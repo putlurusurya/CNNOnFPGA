@@ -33,7 +33,7 @@ module fifo_fill_control_2#(
     input [dim_data_size-1:0] weight_size,
     input [dim_data_size-1:0] image_height,
     input [dim_data_size-1:0] image_width,
-    input [dim_data_size-1:0] offset,
+    input [7:0] offset,
     output reg [13:0] c_address,
     output reg [array_size-1:0] write_enable_out,
     output reg completed
@@ -79,25 +79,28 @@ module fifo_fill_control_2#(
             c_address<=0;
             completed<=0;
             one<=1;
-            for(i=offset;i<array_size;i=i+1)begin
-                offset_ref[i]<=1;
-                r=(i-offset)%weight_size;
-                if(i==offset)begin
-                    t_address[i] <= initial_address;
-                end
-                else if(r==0)begin
-                    t_address[i] <= initial_address + ((i-offset)/weight_size)*image_width ;  
-                end
-                else begin
-                    t_address[i] <= initial_address + (((i-offset)-r)/weight_size)*image_width + (r);
-                end
-            end
+            
 
         end
         else if(enable)begin
             case(state)
                 
                 init:begin
+                    for(i=0;i<array_size;i=i+1)begin
+                        if(i>=offset)begin
+                            offset_ref[i]<=1;
+                            r=(i-offset)%weight_size;
+                            if(i==offset)begin
+                                t_address[i] <= initial_address;
+                            end
+                            else if(r==0)begin
+                                t_address[i] <= initial_address + ((i-offset)/weight_size)*image_width ;  
+                            end
+                            else begin
+                                t_address[i] <= initial_address + (((i-offset)-r)/weight_size)*image_width + (r);
+                            end
+                        end
+                    end
                     write_enable<=0;
                     state<=row_iter;
                     j<=offset;

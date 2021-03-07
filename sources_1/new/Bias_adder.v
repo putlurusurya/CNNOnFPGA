@@ -25,7 +25,6 @@ module Bias_adder#(
         parameter array_size=9
     )(  
         input clk,
-        input mode,
         input reset,
         input [array_size-1:0] enable,
         input [array_size*data_size-1:0] macout,
@@ -44,27 +43,13 @@ module Bias_adder#(
                adder add(
                     .enable(enable[i]),
                     .a(macout[(i+1)*data_size-1:i*data_size]),
-                    .b(op_2[(i+1)*data_size-1:i*data_size]),
+                    .b(biases[(i+1)*data_size-1:i*data_size]),
                     .out(added_output[(i+1)*data_size-1:i*data_size]),
                     .done(done[i])
                );
             end
         endgenerate
-        always@(posedge clk or negedge reset)begin
-            if(~reset)begin
-                sum<=0;
-            end
-            else if(enable)begin
-                if(mode)begin
-                    op_2<=biases;
-                end
-                else begin
-                    sum<=added_output;
-                    op_2<=sum;
-                end
-            end
-        end
-    
+        
 endmodule
 module adder#(
     parameter data_size=16

@@ -38,8 +38,8 @@ module systolic_array#(
 
     );
     
-    wire [7:0] macwire [0:array_size][0:array_size-1];
-    wire [7:0] data_wire [0:array_size-1][0:array_size];
+    wire [data_size-1:0] macwire [0:array_size][0:array_size-1];
+    wire [data_size-1:0] data_wire [0:array_size-1][0:array_size];
     
     genvar i,j;
     
@@ -47,7 +47,7 @@ module systolic_array#(
         for(i=0;i<array_size;i=i+1)begin
            
             assign data_wire[i][0]=datain[(i+1)*data_size-1:i*data_size];
-            assign macwire[0][i]=16'b00000000;
+            assign macwire[0][i]=0;
             
         end
     endgenerate
@@ -60,7 +60,7 @@ module systolic_array#(
                     .clk(clk),
                     .reset(reset),
                     .in_a(data_wire[i][j]),
-                    .in_b(weightin[(i*array_size+j+1)*8-1:(i*array_size+j)*8]),
+                    .in_b(weightin[(i*array_size+j+1)*data_size-1:(i*array_size+j)*data_size]),
                     .in_c(macwire[i][j]),
                     .out_c(macwire[i+1][j]),
                     .out_a(data_wire[i][j+1])

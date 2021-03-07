@@ -46,8 +46,8 @@ module weight_fill_control_tb();
         
     initial
     begin
-            weight_size<=3;
-            number_filters<=9;
+            weight_size<=2;
+            number_filters<=3;
             initial_address<=0;
             reset <= 0;
             enable<=1;

@@ -25,7 +25,7 @@ module output_fill #(
 	input w_clk,
 	input enable,
 	input reset,
-	input initial_address,
+	input [13:0] initial_address,
 	input [dimdata_size-1:0] output_featuremapsize,
 	input is_empty,
 	output reg [13:0] c_address,
@@ -43,7 +43,7 @@ module output_fill #(
                 if(~reset)
                     begin
                         write_enable <=0;
-                        c_address<=initial_address;
+                        c_address<=0;
                         state<=init;
                         done<=0;
                     end
@@ -58,7 +58,7 @@ module output_fill #(
                         calc:begin
                             c_address<=c_address+1;
                             write_enable<=1;
-                            if(c_address-initial_address==output_featuremapsize)begin
+                            if(c_address-initial_address==output_featuremapsize-1)begin
                                 state<=finish;
                             end
                         end

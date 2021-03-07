@@ -34,8 +34,8 @@ module element
          
          always @(posedge clk or negedge reset)begin
             if(!reset) begin
-              out_a<=16'b00000000;
-              out_c<=16'b00000000;
+              out_a<=0;
+              out_c<=0;
             end
             
             else begin  
