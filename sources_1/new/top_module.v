@@ -11,58 +11,88 @@ module top_module#(
     input reset,
     input enable,
     input [7:0] initial_instruction_address,
-    input [dim_data_size-1:0] number_instrs,
+    input [dim_data_size-1:0] number_instrs
     
-    output [mac_size-1:0] max_pool_output1
     
     
     );
     
     
+    wire [weight_size-1:0] weightin;
     wire [mac_size-1:0] macout;
+    wire [mac_size-1:0] max_pool_output1;
+    wire [mac_size-1:0] systolic_dataout;
+    wire [mac_size-1:0] buffer_in_bus;
+    wire [mac_size-1:0] buffer_out;
+    wire [data_size-1:0] fifo_in_bus;
+    
     wire done;
     wire w_done;
     wire [mac_size-1:0] relu_out;
     
-    wire [weight_size-1:0] weightin;
+    
     wire [array_size-1:0] bias_done;
-    wire [mac_size-1:0] buffer_in;
-    wire [array_size*data_size-1:0] buffer_out;
+    
     wire [13:0] maxpool_addr_out;
     
     wire [14*array_size-1:0] buff_fill_address;
-    wire [mac_size-1:0] systolic_dataout;
-    wire [array_size-1:0] buff_write_enable_out;
     
+    wire [array_size-1:0] buff_write_enable_out;
+    wire [array_size-1:0] mp_buff_write_enable_out;
+    wire [array_size-1:0] buff_write_enable_bus;
+    wire buff_write_en_sel;
     //fifo parameters
     wire [13:0] fifo_initial_address;
     wire [13:0] c_address;
     wire [dim_data_size-1:0] image_height;
     wire [dim_data_size-1:0] image_width;
     wire [dim_data_size-1:0] Weight_size;
+
     wire [7:0] fifo_offset;
+    
     wire [array_size-1:0] fifo_w_en;
+    wire [array_size-1:0] r_fifo_w_en;
+    wire [array_size-1:0] fifo_w_en_bus;
+    
     wire [array_size-1:0] fifo_r_en;
     wire [array_size-1:0] full;
     wire [array_size-1:0] empty;
     wire fifo_fill_done;
     wire fifo_fill_enable;
     wire fifo_fill_reset;
+    wire [data_size-1:0] fifo_mux_sel;
     
+    wire [13:0] r_fifo_initial_address;
+    wire [13:0] r_c_address;
+    wire [dim_data_size-1:0] r_image_height;
+    wire [dim_data_size-1:0] r_image_width;
+    wire [dim_data_size-1:0] r_Weight_size;
+    wire [7:0] r_fifo_offset;
+    wire r_fifo_fill_done;
+    wire r_fifo_fill_enable;
+    wire r_fifo_fill_reset;
     
     //weight fill parameters
     wire w_reset;
     wire weight_write_enable;
     wire [14:0] weight_initial_address;
     wire [dim_data_size-1:0] number_filters;
-    
-    
+
     wire [array_size-1:0] relu_enable;
+    
     wire [array_size-1:0] buffer_fill_enable;
     wire [array_size-1:0] buffer_fill_reset;
     wire [array_size-1:0] buffer_fill_done;
     wire [13:0] buffer_fill_initial_address;
-        
+    wire [13:0] buffer_addr_out_bus;
+    
+    wire [array_size-1:0] mp_buffer_fill_enable;
+    wire [array_size-1:0] mp_buffer_fill_reset;
+    wire [array_size-1:0] mp_buffer_fill_done;
+    wire [13:0] mp_buffer_fill_initial_address;
+    wire [14*array_size-1:0] buffer_addr_in_bus;
+    wire [14*array_size-1:0] mp_buff_fill_address;
+    wire [14*array_size-1:0] s;
     wire [data_size-1:0] systolic_datain;
     
     wire [data_size*array_size-1:0] bias_added;
@@ -72,15 +102,16 @@ module top_module#(
     //demux parameters
     wire [mac_size-1:0] sigmoid;
     
-    wire [mac_size-1:0] d3;
-    wire [mac_size-1:0] d4;
+    wire [mac_size-1:0] softmax;
+    wire [mac_size-1:0] noac;
     
     wire [3:0] demux_sel;
     
     
-
+    wire [1:0] addr_sel_mux;
     
     wire [dim_data_size-1:0] output_featuremapsize;
+    wire [dim_data_size-1:0] mp_output_featuremapsize;
     
     
     wire [13:0] maxpool_fill_initial_address;
@@ -89,6 +120,7 @@ module top_module#(
     wire  maxpool_done;
     
     reg [array_size-1:0] is_empty=0;
+    reg [array_size-1:0] mp_is_empty=0;
     
     wire maxpool_clear;
     wire [array_size-1:0] maxpool_arr_r_en;
@@ -96,7 +128,7 @@ module top_module#(
     
     wire [array_size-1:0] bias_enable;
     wire bias_reset;
-
+    wire [2:0] buffer_mux_sel;
     
     master_control mc(
     
@@ -117,6 +149,17 @@ module top_module#(
     .image_width(image_width),
     .fifo_offset(fifo_offset),
     .fifo_fill_done(fifo_fill_done),
+    .fifo_mux_sel(fifo_mux_sel),
+    
+    //fifo refill
+    .r_fifo_initial_address(r_fifo_initial_address),
+    .r_fifo_fill_enable(r_fifo_fill_enable),
+    .r_fifo_fill_reset(r_fifo_fill_reset),
+    .r_image_height(r_image_height),
+    .r_image_width(r_image_width),
+    .r_Weight_size(r_Weight_size),
+    .r_fifo_offset(r_fifo_offset),
+    .r_fifo_fill_done(r_fifo_fill_done),
     
     //systolic array control signals
     .s_reset(s_reset),
@@ -146,22 +189,40 @@ module top_module#(
     .buffer_fill_initial_address(buffer_fill_initial_address),
     .output_featuremapsize(output_featuremapsize),
     .buffer_fill_done(buffer_fill_done),
+    .buff_write_en_sel(buff_write_en_sel),
+    
+    //maxpool buffer fill
+    .mp_buffer_fill_enable(mp_buffer_fill_enable),
+    .mp_buffer_fill_reset(mp_buffer_fill_reset),
+    .mp_buffer_fill_initial_address(mp_buffer_fill_initial_address),
+    .mp_output_featuremapsize(mp_output_featuremapsize),
+    .mp_buffer_fill_done(mp_buffer_fill_done),
     
     //maxpoolfill
     .maxpool_fill_reset(maxpool_fill_reset),
     .maxpool_fill_enable(maxpool_fill_enable),
     .maxpool_done(maxpool_done),
     .maxpool_fill_initial_address(maxpool_fill_initial_address),
+    .buffer_mux_sel(buffer_mux_sel),
     
     //maxpool array
     .maxpool_clear(maxpool_clear),
     .maxpool_arr_r_en(maxpool_arr_r_en),
     .maxpool_arr_enable(maxpool_arr_enable),
     
-    .done(done)
+    .done(done),
+    
+    .addr_sel_mux(addr_sel_mux),
+    .fifo_write_en_sel(fifo_write_en_sel),
+    .addr_sel_mux2(addr_sel_mux2)
 
     );
-    
+    mux m(
+        .in1(fifo_w_en),
+        .in2(r_fifo_w_en),
+        .out(fifo_w_en_bus),
+        .sel(fifo_write_en_sel)
+    );
     
     wire [array_size-1:0] fifo_full;
     
@@ -180,6 +241,12 @@ module top_module#(
         .offset(fifo_offset)
     );
     
+    select_mux sm(
+        .in1(systolic_datain),
+        .in2(buffer_out),
+        .out(fifo_in_bus),
+        .sel(fifo_mux_sel)
+    );
     InputDataROM InputROM (
        .clka(w_clk),    
        .addra(c_address), 
@@ -190,12 +257,11 @@ module top_module#(
         .r_clk(s_clk),
         .w_clk(w_clk),
         .r_en(fifo_r_en),
-        .w_en(fifo_w_en),
-        .rclear(fifo_clear),
-        .wclear(fifo_clear),
+        .w_en(fifo_w_en_bus),
+        .clear(fifo_clear),
         .full(fifo_full),
         .empty(fifo_empty),
-        .in_bus(systolic_datain),
+        .in_bus(fifo_in_bus),
         .out_bus(systolic_dataout)
      ); 
      
@@ -233,14 +299,24 @@ module top_module#(
         .added_output(bias_added),
         .done(bias_done)
         );
-        
+    
+    buffer_mux bm(
+        .in1(sigmoid),
+        .in2(relu_out),
+        .in3(softmax),
+        .in4(noac),
+        .in5(max_pool_output1),
+        .out(buffer_in_bus),
+        .sel(buffer_mux_sel)
+    );
+    
     demux_array demux_arr(
         .sel(demux_sel),
         .d_in(bias_added),
         .d_out_1(sigmoid),
         .d_out_2(relu),
-        .d_out_3(d3),
-        .d_out_4(d4)
+        .d_out_3(softmax),
+        .d_out_4(noac)
     );
   
     reluArr rarr(
@@ -250,7 +326,21 @@ module top_module#(
         .out0(relu_out)
     );
     
-    
+    address_mux am(
+        .in1(buff_fill_address),
+        .in2(mp_buff_fill_address),
+        .in3(s),
+        
+        .out(buffer_addr_in_bus),
+        .sel(addr_sel_mux)
+    );
+    address_mux2 am2(
+        .in1(maxpool_addr_out),
+        .in2(r_c_address),
+        
+        .out(buffer_addr_out_bus),
+        .sel(addr_sel_mux2)
+    );
     buffer_fill_array buffer_fill_arr(
         .w_clk(s_clk),
         .enable(buffer_fill_enable),
@@ -263,8 +353,7 @@ module top_module#(
         .done(buffer_fill_done)
     );
     
-    reg [array_size-1:0] buffer_ena=9'h1ff;
-    reg [array_size-1:0] buffer_enb=9'h1ff;
+    
     
     wire [3:0] maxpool_sel;
     
@@ -277,21 +366,52 @@ module top_module#(
                 .sel(maxpool_sel),
                 .done(maxpool_done)
             );
+    reg [array_size-1:0] r_fifo_full=0;
+    fifo_fill_control_2 fifo_refill_control(
+        .clk(w_clk),
+        .initial_address(r_fifo_initial_address),
+        .write_enable_in(r_fifo_full),
+        .enable(r_fifo_fill_enable),
+        .reset(r_fifo_fill_reset),
+        .weight_size(r_Weight_size),
+        .image_height(r_image_height),
+        .image_width(r_image_width),
+        .c_address(r_c_address),
+        .write_enable_out(r_fifo_w_en),
+        .completed(r_fifo_fill_done),
+        .offset(r_fifo_offset)
+    );
     
-  
-    
-    
+    buffer_fill_array maxpool_buffer_fill_arr(
+        .w_clk(s_clk),
+        .enable(mp_buffer_fill_enable),
+        .reset(mp_buffer_fill_reset),
+        .initial_address(mp_buffer_fill_initial_address),
+        .output_featuremapsize(mp_output_featuremapsize),
+        .is_empty(mp_is_empty),
+        .c_address(mp_buff_fill_address),
+        .write_enable(mp_buff_write_enable_out),
+        .done(mp_buffer_fill_done)
+    );
+    mux m1(
+        .in1(buff_write_enable_out),
+        .in2(mp_buff_write_enable_out),
+        .out(buff_write_enable_bus),
+        .sel(buff_write_en_sel)
+    );
     BufferRamArray unified_buffer (
          .w_clk(s_clk),      
-         .wea(buff_write_enable_out),      
-         .addra(buff_fill_address),  
-         .dina(relu_out),   
+         .wea(buff_write_enable_bus),      
+         .addra(buffer_addr_in_bus),  
+         .dina(buffer_in_bus),   
          .r_clk(w_clk),         
-         .addrb(maxpool_addr_out),  
+         .addrb(buffer_addr_out_bus),  
          .bus2(buffer_out)
     );
+    
     wire [4*array_size-1:0] maxpool_full;
     wire [4*array_size-1:0] maxpool_empty;
+    
     maxpool_array maxpool_array(
         .r_clk(s_clk),
         .w_clk(w_clk),
@@ -305,7 +425,5 @@ module top_module#(
         .output1(max_pool_output1),
         .enable(maxpool_arr_enable)
     );
-    
-    
     
 endmodule

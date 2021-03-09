@@ -1,7 +1,7 @@
 -- Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2020.1 (win64) Build 2902540 Wed May 27 19:54:49 MDT 2020
--- Date        : Fri Mar  5 08:30:48 2021
+-- Date        : Mon Mar  8 14:32:42 2021
 -- Host        : LAPTOP-R5TEM1UP running 64-bit major release  (build 9200)
 -- Command     : write_vhdl -force -mode synth_stub
 --               g:/CNNSONFPGA/Project/Project.srcs/sources_1/ip/instructions_memory/instructions_memory_stub.vhdl

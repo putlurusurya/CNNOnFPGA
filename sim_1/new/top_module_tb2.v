@@ -36,11 +36,22 @@ module top_module_tb2(
     reg enable;
     
     
-    wire [mac_size-1:0] max_pool_output1;
+    
     
     
     reg [7:0] initial_instruction_address;
     reg [dim_data_size-1:0] number_instrs;
+    
+    
+    wire [weight_size-1:0] weightin;
+    wire [data_size-1:0] fifo_in_bus;
+    wire [mac_size-1:0] systolic_dataout;
+    wire [mac_size-1:0] macout;
+
+    
+    wire [mac_size-1:0] buffer_in_bus;
+    wire [mac_size-1:0] buffer_out;
+    wire [mac_size-1:0] max_pool_output1;
     
     top_module uut(
         .s_clk(s_clk),
@@ -52,7 +63,15 @@ module top_module_tb2(
         .initial_instruction_address(initial_instruction_address),
         .number_instrs(number_instrs),
         
-        .max_pool_output1(max_pool_output1)
+        .weightin(weightin),
+        .fifo_in_bus(fifo_in_bus),
+        .macout(macout),
+        .systolic_dataout(systolic_dataout),
+        .max_pool_output1(max_pool_output1),
+        .buffer_in_bus(buffer_in_bus),
+        .buffer_out(buffer_out)
+        
+        
         );
     integer count=0;
     initial begin
@@ -61,7 +80,7 @@ module top_module_tb2(
         enable<=1;
         reset<=0;
         initial_instruction_address<=0;
-        number_instrs<=5;
+        number_instrs<=9;
         #200;
         reset<=1;
         #60000;

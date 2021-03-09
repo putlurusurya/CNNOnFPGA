@@ -47,6 +47,20 @@ module master_control#(
     output reg [dimdata_size-1:0] image_width,
     output reg [7:0] fifo_offset,
     input  fifo_fill_done,
+    output reg [dimdata_size-1:0] fifo_mux_sel,
+    
+    // fifo refill contrls
+
+    
+    output reg [13:0] r_fifo_initial_address,
+    output reg r_fifo_fill_enable,
+    output reg r_fifo_fill_reset,
+    output reg [dimdata_size-1:0] r_image_height,
+    output reg [dimdata_size-1:0] r_image_width,
+    output reg [7:0] r_fifo_offset,
+    input  r_fifo_fill_done,
+    
+    output reg fifo_write_en_sel,
     
     //systolic array control signals
     output reg s_reset,
@@ -56,6 +70,7 @@ module master_control#(
     output reg w_reset,
     output reg weight_write_enable,
     output reg [dimdata_size-1:0] Weight_size,
+    output reg [dimdata_size-1:0] r_Weight_size,
     output reg [dimdata_size-1:0] number_filters,
     input w_done,
     
@@ -79,6 +94,16 @@ module master_control#(
     output reg [dimdata_size-1:0] output_featuremapsize,
     input [array_size-1:0] buffer_fill_done,
     
+    output reg [2:0] buffer_mux_sel,
+    //buffer refill
+    output reg [array_size-1:0] mp_buffer_fill_enable,
+    
+    output reg [array_size-1:0] mp_buffer_fill_reset,
+    
+    output reg [13:0] mp_buffer_fill_initial_address,
+    output reg [dimdata_size-1:0] mp_output_featuremapsize,
+    input [array_size-1:0] mp_buffer_fill_done,
+    
     //maxpoolfill
     output reg maxpool_fill_reset,
     output reg  maxpool_fill_enable,
@@ -90,12 +115,15 @@ module master_control#(
     output reg [array_size-1:0] maxpool_arr_r_en,
     output reg [array_size-1:0] maxpool_arr_enable,
     
-    output reg done
+    output reg done,
     
+    output reg [1:0] addr_sel_mux,
+    output reg addr_sel_mux2,
     
+    output reg buff_write_en_sel
 
     );
-    
+    reg [array_size-1:0] mp_buffer_fill_enable1;
     reg [7:0] instruction_address;
     wire [63:0] instruction;
     wire [63:0] c_instruction;
@@ -103,6 +131,9 @@ module master_control#(
     integer count;
     integer icount;
     integer pcount;
+    integer filter_count;
+    reg [5:0] number_channels;
+    integer channel_count;
     
     reg [5:0] state;
     localparam instruction_read=6'b000000;
@@ -112,12 +143,14 @@ module master_control#(
     localparam conv=6'b000011;
     localparam maxpool_fill=6'b000100;
     localparam maxpooling=6'b000101;
+    localparam fifo_refill=6'b000110;
     localparam fifo_cl=6'b100000;
     localparam finish=6'b111111;
     
     
     integer s_offset;
     integer i;
+    reg d;
     
     instructions_memory im (
       .a(instruction_address),     
@@ -141,7 +174,7 @@ module master_control#(
             
             case(state)
                 instruction_fetch:begin
-                    if(icount==number_instrs)begin
+                    if(icount>=number_instrs)begin
                         state<=finish;
                     end
                     instruction_address<=initial_instruction_address+icount;
@@ -179,8 +212,22 @@ module master_control#(
                         state<=maxpool_fill;
                         maxpool_arr_r_en<=0;
                         maxpool_arr_enable<=0;
+                        mp_buffer_fill_reset<=0;
                         maxpool_clear<=0;
                         maxpool_fill_reset<=0;
+                        d<=0;
+                        
+                    end
+                    else if(instruction[4:0]==5'b00101)begin
+                        r_fifo_fill_reset<=0;
+                        r_fifo_fill_enable<=1;
+                        state<=fifo_refill;
+                        r_fifo_initial_address<=instruction[18:5];
+                        r_image_height<=instruction[34:19];
+                        r_image_width<=instruction[50:35];
+                        r_Weight_size<=instruction[57:51];
+                        number_channels<=9;
+                        channel_count<=0;
                     end
                 end
                 fifo_cl:begin
@@ -202,10 +249,12 @@ module master_control#(
                 fifo_fill:begin
                     fifo_fill_reset<=1;
                     fifo_clear<=1;
+                    fifo_write_en_sel<=0;
                     fifo_initial_address<=instruction[18:5];
                     image_height<=instruction[34:19];
                     image_width<=instruction[50:35];
                     fifo_offset<=instruction[57:51];
+                    fifo_mux_sel<=array_size;
                     if(fifo_fill_done)begin
                         state<=instruction_fetch;
                     end
@@ -215,13 +264,16 @@ module master_control#(
                     bias_reset<=1;
                     demux_sel<=instruction[8:5];
                     buffer_fill_reset<=9'h1ff;
-                    buffer_fill_initial_address<=0;
-                    output_featuremapsize<=9;
+                    output_featuremapsize<=instruction[25:10];
+                    buffer_fill_initial_address<=instruction[39:26];
+                    addr_sel_mux<=0;
+                    buffer_mux_sel<=3'b001;
+                    buff_write_en_sel<=0;
                     if(count<Weight_size*Weight_size-fifo_offset)begin
                         fifo_r_en[count]=1;
                         count<=count+1;
                     end
-                    else if(count==Weight_size*Weight_size)begin
+                    else if(count==Weight_size*Weight_size-fifo_offset)begin
                         bias_enable<=9'h1ff;
                         relu_enable<=9'h1ff;
                         count<=count+1;
@@ -233,22 +285,61 @@ module master_control#(
                     end
                     else if(buffer_fill_done==9'h1ff)begin
                         state<=instruction_fetch;
+                        fifo_r_en<=0;
+                        buffer_fill_enable<=0;
+                        buffer_fill_reset<=0;
                     end
                 end
                 maxpool_fill:begin
-                    maxpool_fill_initial_address<=instruction[18:5];
+                    addr_sel_mux2<=0;
+                    maxpool_fill_initial_address<=0;
                     maxpool_clear<=1;
-                    maxpool_fill_reset<=1;
+                    maxpool_fill_reset<=9'h1ff;
+                    mp_buffer_fill_enable<=0;
+                    mp_buffer_fill_reset<=9'h1ff;
+                    mp_output_featuremapsize<=4;
                     
+                    buff_write_en_sel<=1;
+                    mp_buffer_fill_initial_address<=instruction[48:35];
                     maxpool_fill_enable<=1;
-                    
+                    addr_sel_mux<=1;
+                    buffer_mux_sel<=3'b100;
                     if(maxpool_done==1)begin
                         for(i=0;i<array_size;i=i+1)begin
                             if(i<number_filters)begin
                                 maxpool_arr_r_en[i]<=1;
                                 maxpool_arr_enable[i]<=1;
                             end
+                            
+                            mp_buffer_fill_enable1[i]<=1;
                         end
+                        mp_buffer_fill_enable<=mp_buffer_fill_enable1;
+                        if(mp_buffer_fill_done==9'h1ff)begin
+                            state<=instruction_fetch;
+                            mp_buffer_fill_enable<=0;
+                            maxpool_fill_reset<=0;
+                            mp_buffer_fill_reset<=0;
+                        end
+                    end
+                end
+                fifo_refill:begin
+                    addr_sel_mux2<=1;
+                    fifo_write_en_sel<=1;
+                    if(r_fifo_fill_done)begin
+                        if(channel_count==number_channels)begin
+                            state<=instruction_fetch;
+                        end
+                        r_fifo_fill_reset<=0;
+                        channel_count<=channel_count+1;
+                        fifo_mux_sel<=channel_count;
+                        r_fifo_offset<=r_fifo_offset+r_Weight_size*r_Weight_size;
+                    end
+                    else begin
+                        r_fifo_fill_reset<=1;
+                        if(channel_count==0)begin
+                            r_fifo_offset<=0;
+                        end
+                        fifo_mux_sel<=channel_count;
                     end
                 end
                 finish:begin
@@ -257,7 +348,8 @@ module master_control#(
             endcase
         end
     end
-    
+    //Maxpool output filling
+    //fifo refilling 
     
     
 endmodule

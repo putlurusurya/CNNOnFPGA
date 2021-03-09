@@ -7,8 +7,7 @@ module fifo#(
 	input w_clk,
 	input r_en,
 	input w_en,
-	input rclear,
-	input wclear,
+	input clear,
 	input [data_size-1:0] dataIn,
 	output reg [data_size-1:0] dataOut,
 	output empty,
@@ -32,10 +31,10 @@ module fifo#(
 
 	
 
-	always@(posedge w_clk or negedge wclear)
+	always@(posedge w_clk or negedge clear)
 	begin
 	    temp_w_en<=w_en;
-	    if(~wclear)begin
+	    if(~clear)begin
 	        wptr <= 0;
 	    end
 		else if(w_en & ~full) begin
@@ -44,9 +43,9 @@ module fifo#(
 		end
 	end	
 
-	always@(posedge r_clk or negedge rclear)
+	always@(posedge r_clk or negedge clear)
 	begin
-	    if(~rclear)begin
+	    if(~clear)begin
 	        rptr <= 0;
 	        dataOut <= 0;
 	    end

@@ -79,6 +79,7 @@ module fifo_fill_control_2#(
             c_address<=0;
             completed<=0;
             one<=1;
+            offset_ref<=0;
             
 
         end
@@ -88,7 +89,9 @@ module fifo_fill_control_2#(
                 init:begin
                     for(i=0;i<array_size;i=i+1)begin
                         if(i>=offset)begin
-                            offset_ref[i]<=1;
+                            if(i<=offset+weight_size*weight_size-1)begin
+                                offset_ref[i]<=1;
+                            end
                             r=(i-offset)%weight_size;
                             if(i==offset)begin
                                 t_address[i] <= initial_address;
@@ -117,7 +120,7 @@ module fifo_fill_control_2#(
                     if(write_enable_in[j]==0 && !done[j])begin
                         if(row[j]==image_width-weight_size)begin
                             c_address<=t_address[j]+row[j];
-                            write_enable<=one<<j-offset;
+                            write_enable<=one<<j;
                             row[j]<=0;
                             if(iter[j]==image_height-weight_size)begin
                                 done[j]<=1;
@@ -130,7 +133,7 @@ module fifo_fill_control_2#(
                         end
                         else begin
                             c_address<=t_address[j]+row[j];
-                            write_enable<=one<<j-offset;
+                            write_enable<=one<<j;
                             row[j]<=row[j]+1;
                         end
                     end
