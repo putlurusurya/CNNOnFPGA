@@ -104,13 +104,21 @@ The Hardware accelerator is simulated with the following instructions.
 Instructions Executed:-
 
 Weight_fill 0 3 9
+
 Fifo_clear 
+
 Fifo_fill 0 5 5 0
+
 Conv 1 9 0
+
 Maxpool_fill 0 4 0
+
 weight _fill 0 3 9
+
 Fifo_clear
+
 Fifo_refill 0 2 2 1 9
+
 Conv 1 9 0
 
 ## Simulation output :-
