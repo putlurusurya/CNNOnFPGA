@@ -104,10 +104,7 @@ Fifo_refill 0 2 2 1 9
 Conv 1 9 0
 
 ## Simulation output :-
-
-![IMAGE ALT TEXT HERE](https://www.youtube.com/embed/-cc6fLoC9Q8)
-
-
+[![](http://img.youtube.com/vi/-cc6fLoC9Q8/0.jpg)](http://www.youtube.com/watch?v=-cc6fLoC9Q8 "Simulation Results")
 
 ## Resource utilisation :-
 
