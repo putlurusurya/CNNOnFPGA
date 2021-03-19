@@ -105,6 +105,11 @@ Conv 1 9 0
 
 ## Simulation output :-
 
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/cc6fLoC9Q8
+/0.jpg)](https://www.youtube.com/watch?v=cc6fLoC9Q8
+)
+
+
 <iframe width="560" height="315" src="https://www.youtube.com/embed/-cc6fLoC9Q8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Resource utilisation :-
