@@ -105,7 +105,7 @@ Conv 1 9 0
 
 ## Simulation output :-
 
-
+<iframe width="560" height="315" src="https://www.youtube.com/embed/-cc6fLoC9Q8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Resource utilisation :-
 
@@ -113,7 +113,7 @@ Conv 1 9 0
 
 # Current Status and future work
 
-Current version of the hardware accelerator can be scaled only upto 16x16 matrix multiplication unit. Instruction generator is under development. The accelerator is not deployed on to FPGA. Post synthesis and Post implementation functional simulation is verified. Timing simulation is yet to be done.
+Current version of the hardware accelerator can be scaled only upto 16x16 matrix multiplication unit. Instruction generator is under development. The accelerator is yet to be deployed and tested on to FPGA. Post synthesis and Post implementation functional simulation is verified. Timing simulation is yet to be done.
  
 Future work for this project includes:-
 * Improve the architecture with software optimisations in consideration
