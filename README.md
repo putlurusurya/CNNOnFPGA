@@ -17,7 +17,7 @@ Systolic array is an array of these processing elements. The following GIF illus
 Since memory can be operated at higher speeds a fifo is designed to store the elements in the buffer to overcome cross domain clocking problems. Many small BRAM blocks are used to reduce waiting time in the buffer before writing the processed data into memory.
 The designed architecture is implemented in verilog HDL using Xilinx Vivado design suite. All the required modules in the datapath are implemented in verilog. The datapath elements are then connected together in a top module. Control modules are developed to control the flow of data between the datapath modules. Master control module is designed to send control signals to all the control modules and the datapath modules based on the current instruction and previous instructions executed.
 
-There is currently support for these seven high level instructions in our architecture.
+There is currently support for seven high level instructions in our architecture.
 
 We are using fixed point calculations in our architecture. Tensorflow has a good post training quantisation technique which quantises the 64 bit floating point weights into 8 bit integers. We can extract those weights and biases and computation graph from the model. The extracted weights and biases can be used for our accelerator. The extracted model can be converted into a set of instructions which can be used to run on our accelerator.
 
@@ -116,6 +116,7 @@ Conv 1 9 0
 ## Simulation output :-
 
 Click on the image to view simulation video
+
 [![](http://img.youtube.com/vi/-cc6fLoC9Q8/0.jpg)](http://www.youtube.com/watch?v=-cc6fLoC9Q8 "Simulation Results")
 
 ## Resource utilisation :-
