@@ -125,7 +125,7 @@ Conv 1 9 0
 
 Click on the image to view simulation video
 
-[![](http://img.youtube.com/vi/-cc6fLoC9Q8/0.jpg)](http://www.youtube.com/watch?v=-cc6fLoC9Q8 "Simulation Results")
+[![](./media/simulationResults.png)](http://www.youtube.com/watch?v=-cc6fLoC9Q8 "Simulation Results")
 
 ## Resource utilisation :-
 
