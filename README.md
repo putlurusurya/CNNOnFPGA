@@ -1,16 +1,13 @@
 # CNNOnFPGA
 
-# Python
 
-Python notebook contains code for converting onnx model into a python dictionary
 
-pending - Generating a set of instructions
-
-# Modules
-
+# Architecture
+![Data path](./media/datapath.jpeg)
 ## Data Path
 * Systolic Array
 	* Processing Element
+![Processing Element](./media/processingElement.jpeg)
 * FIFO array
 	* FIFO
 * MUXES
@@ -29,6 +26,7 @@ pending - Generating a set of instructions
 * Matrix adder
 
 ## Control path
+![control path](./media/controlpath.jpeg)
 * Master Control
 * FIFO fill control
 * FIFO refill control
@@ -73,4 +71,19 @@ opcode:- 5 bit
 	* opcode = 00111
 	* in address = 14 bits
 	* out address = 14 bits
+
+# Python
+
+Python notebook contains code for converting onnx model into a python dictionary
+
+# Current Status and future work
+
+Current version of the hardware accelerator can be scaled only upto 16x16 matrix multiplication unit. Instruction generator is under development. The accelerator is not deployed on to FPGA. Post synthesis and Post implementation functional simulation is verified. Timing simulation is yet to be done.
+ 
+Future work for this project includes:-
+* Improve the architecture with software optimisations in consideration
+* Add DDR3 memory or other external memory support
+* SD card support for live camera detection
+* Improve the matrix multiplication model with a better architecture 
+* Improve timing constraints
 
