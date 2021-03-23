@@ -29,37 +29,86 @@ We are using fixed point calculations in our architecture. Tensorflow has a good
 
 * Systolic Array
 	* Processing Element
+
+The array of the processing elements form systolic array In this processing element weights stay stationary while the other inputs are transmitted to other elements. Systolic array is used to perform convolution operation by unrolling the convoulutional windows and giving them as inputs to the array.
+
 * FIFO array
 	* FIFO
+
+First In First Out Memory. It acts like a buffer between memory and systolic array. It helps in storing the data in a definite order before entering systolic array for the multiplication.
+
 * MUXES
+
+A variety of muxes are used to route the signals between busses.
+
 * Bias adder
+
+Bias adder adds biases to the output of the systolic array. Output of the Bias adder is then passed through activation unit.
+
 * demux array
 	* demux
+
+Routes the macout of the systolic array to the activation function modules.
+
 * Activations
 	* Relu
 	* Sigmoid
-* 2*2 Max pooling
+	* Tanh
+
+Performs the activation function operation on the input signal
+
+* Max pooling
+
+Performs max pooling operation on the given matrix. The accelerator currently supports maxpooling of size of 2 multiples only.
+
 * ROM
 	* Weight and Bias ROM
 	* Input ROM
+
+Readonly memory to store the weights biases, inputs etc.
+
 * Buffer ram array
 	* Buffer RAM
+
+Buffer RAM array consists of many small BRAM blocks. Buffer ram is used to store the intermediate data or results. Number of BRAM blocks in a buffer RAM array is equal to size of the systolic array. This is done to prevent waiting time of the data in the buffer before getting stored in the memory. 
+
 * Matrix adder
+
+Matrix adder is used to add matrices. This is used when the size of the weights are very large and cannot be accomodated in Systolic array. The weights are divided into portions and partial multiplications obtained are stored in the buffer memory. The stored partial multiplications are added and again stored in the memory again
 
 ## Control path
 ![control path](./media/controlpath.jpeg)
 * Master Control
+
+Master control reads instructions from instruction memory. Decodes the instructions and sends control signals to other control blocks and data path elements based on input signals and previous states and variables
+
 * FIFO fill control
+
+Fills the fifo buffer in a particular sequence
+
 * FIFO refill control
+
+Similar to fifo fill buffer. The inputs from the RAM are filled into buffer using this control block
+
 * Weight fill control
+
+Fetches weights from ROM. Fills the weights values in the weight reg
+
 * Bias fill control
+
+Similar to weight fill control. Fetches bias values from the ROM. Fills the values in the bias register and Passes it on to the bias adder.
+
 * Buffer fill control
+
+Is used to fill RAM buffer. Data exiting the activation unit is stored in the RAM. Data exiting maxpool unit is also stored in the RAM buffer using this
+
 * Maxpool fill control
-* Buffer refill control
+
+Fetches data from the RAM and fills it in the Max Pool Layer. Outputs memory addresses in an appropriate sequence.
 
 # Supported instructions 
 
-Each instruction lenght - 64 bit
+Each instruction length - 64 bit
 
 opcode:- 5 bit
 
