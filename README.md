@@ -146,6 +146,8 @@ opcode:- 5 bit
 
 Python notebook contains code for converting onnx model into a python dictionary containing weights and biases. 
 
+Using Tensorflow's post training integer quantization technique to convert floating point weights to integer weights. Weights, biases and computation graphs are extracted  from the quantised model
+
 # Results 
 
 The Hardware accelerator is simulated with the following instructions.
