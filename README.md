@@ -1,5 +1,7 @@
 # CNNSOnFPGA
 
+[click here](https://prezi.com/view/Z8D2Ct6PeTj04tObr0lK/) to view presentation slides of this project
+
 # Introduction
 
 Convolutional neural networks are proved to be excellent in the world of computer vision. But it involves a lot of computation work which takes a lot of time to be done. This project aims at developing a hardware accelerator which can make these computations faster. 
@@ -201,4 +203,3 @@ Future work for this project includes:-
 * Improve the matrix multiplication model with a better architecture 
 * Improve timing constraints
 
-[click here](https://prezi.com/view/Z8D2Ct6PeTj04tObr0lK/) to view presentation slides of this project
